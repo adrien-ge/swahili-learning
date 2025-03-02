@@ -30,7 +30,7 @@ if (!userId) {
 
 // 📌 Fonction pour récupérer ou créer l'utilisateur
 async function chargerNomUtilisateur() {
-    const docRef = doc(db, "utilisateurs", userId);
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
 
     let nom = "Anonyme"; // Nom par défaut
