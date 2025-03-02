@@ -21,44 +21,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-// 📌 Fonction pour ajouter un utilisateur
-async function ajouterUtilisateur(userId, nom) {
-    try {
-        await setDoc(doc(db, "utilisateurs", userId), {
-            nom: nom,
-            leçon: "Aucune",
-            score: 0,
-            dateInscription: new Date()
-        });
-        console.log("Utilisateur ajouté avec succès !");
-    } catch (error) {
-        console.error("Erreur :", error);
-    }
+// 📌 Générer un identifiant unique pour chaque utilisateur
+let userId = localStorage.getItem("user_id");
+if (!userId) {
+    userId = "user_" + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem("user_id", userId);
 }
 
-// 📌 Exemple d'utilisation (ajouter un utilisateur)
-ajouterUtilisateur("user_ABC123", "Alice");
-
-
-import { getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// 📌 Fonction pour charger les données d’un utilisateur
-async function chargerUtilisateur(userId) {
+// 📌 Fonction pour récupérer ou créer l'utilisateur
+async function chargerNomUtilisateur() {
     const docRef = doc(db, "utilisateurs", userId);
     const docSnap = await getDoc(docRef);
 
+    let nom = "Anonyme"; // Nom par défaut
+
     if (docSnap.exists()) {
-        console.log("Utilisateur trouvé :", docSnap.data());
-        return docSnap.data();
+        nom = docSnap.data().nom;
     } else {
-        console.log("Aucun utilisateur trouvé.");
-        return null;
+        // Si l'utilisateur n'existe pas, on l'ajoute à la base
+        await setDoc(docRef, { nom: "Anonyme", leçon: "Aucune", score: 0, dateInscription: new Date() });
     }
+
+    // 📌 Afficher le nom de l'utilisateur dans le header
+    document.getElementById("nomUtilisateur").textContent = `Bienvenue, ${nom} !`;
 }
 
-// 📌 Exemple d'utilisation (charger un utilisateur)
-chargerUtilisateur("user_ABC123").then(data => {
-    if (data) {
-        document.getElementById("progression").textContent = `Leçon : ${data.leçon}, Score : ${data.score}`;
-    }
-});
+// Charger le nom de l'utilisateur au démarrage de la page
+chargerNomUtilisateur();
