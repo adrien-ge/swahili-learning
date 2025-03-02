@@ -17,34 +17,40 @@ const firebaseConfig = {
   measurementId: "G-QVQFHXS401"
 };
 
-// Initialize Firebase
+// Initialiser Firebase et Firestore
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
-// 📌 Générer un identifiant unique pour chaque utilisateur
+// 📌 Vérifier si un identifiant utilisateur est déjà enregistré dans le navigateur
 let userId = localStorage.getItem("user_id");
+
 if (!userId) {
     userId = "user_" + Math.random().toString(36).substr(2, 9);
     localStorage.setItem("user_id", userId);
 }
 
-// 📌 Fonction pour récupérer ou créer l'utilisateur
+// 📌 Fonction pour récupérer ou créer un utilisateur dans la collection "users"
 async function chargerNomUtilisateur() {
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
 
-    let nom = "Anonyme"; // Nom par défaut
+    let nom = "Anonyme"; // Valeur par défaut
 
     if (docSnap.exists()) {
         nom = docSnap.data().nom;
     } else {
-        // Si l'utilisateur n'existe pas, on l'ajoute à la base
+        // 📌 Si l'utilisateur n'existe pas, on l'ajoute à la base
         await setDoc(docRef, { nom: "Anonyme", leçon: "Aucune", score: 0, dateInscription: new Date() });
     }
 
-    // 📌 Afficher le nom de l'utilisateur dans le header
-    document.getElementById("nomUtilisateur").textContent = `Bienvenue, ${nom} !`;
+    // 📌 Vérifier que l'élément HTML existe avant d'afficher le nom
+    const nomElement = document.getElementById("nomUtilisateur");
+    if (nomElement) {
+        nomElement.textContent = `Bienvenue, ${nom} !`;
+    } else {
+        console.error("L'élément #nomUtilisateur n'existe pas dans le HTML.");
+    }
 }
 
-// Charger le nom de l'utilisateur au démarrage de la page
+// Charger le nom de l'utilisateur au démarrage
 chargerNomUtilisateur();
