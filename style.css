@@ -1,0 +1,125 @@
+/* 🌍 Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+/* 📌 Header */
+header {
+    background: #009688;
+    color: white;
+    padding: 15px;
+    font-size: 1.2em;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* 📌 Contenu principal */
+main {
+    padding: 20px;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* 📌 Bouton principal */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 1.2em;
+    color: white;
+    background: #ff9800;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background: #e68900;
+}
+
+/* 📌 Quiz - Boutons */
+.quiz-btn {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 12px;
+    font-size: 1.1em;
+    color: white;
+    background: #2196F3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quiz-btn:hover {
+    background: #1976D2;
+}
+
+/* 📌 Zone de progression */
+#score, #niveau, #badges {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 📌 Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 10px;
+    font-size: 0.9em;
+    margin-top: 20px;
+}
+
+/* 🌍 Adaptation pour mobile */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+
+    nav a {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .btn {
+        width: 80%;
+    }
+
+    .quiz-btn {
+        width: 90%;
+    }
+}
