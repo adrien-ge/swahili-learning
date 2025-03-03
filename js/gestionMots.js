@@ -1,8 +1,43 @@
 import { db } from "../js/firebase-config.js";
-import { collection,addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+async function chargerMots() {
+    let container = document.getElementById("wordsTableBody");
+    container.innerHTML = ""; // Nettoyer l'affichage avant de charger
+    
+    try {
+        const motsSnapshot = await getDocs(collection(db, "mots"));
+        let mots = [];
+        motsSnapshot.forEach(doc => {
+            mots.push({ id: doc.id, ...doc.data() });
+        });
 
-function ajouterMot() {
+        mots.forEach(mot => {
+            let card = document.createElement("div");
+            card.classList.add("table-card");
+
+            card.innerHTML = `
+                <div class="row">
+                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'swahili', this.textContent)">${mot.swahili}</span>
+                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'francais', this.textContent)">${mot.francais}</span>
+                </div>
+                <div class="row">
+                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'etape', this.textContent)">${mot.etape || "-"}</span>
+                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'type', this.textContent)">${mot.type || "-"}</span>
+                </div>
+                <div class="actions">
+                    <button onclick="supprimerMot('${mot.id}')">🗑 Supprimer</button>
+                </div>
+            `;
+
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error("Erreur lors du chargement des mots:", error);
+    }
+}
+
+async function ajouterMot() {
     let swahili = document.getElementById("swahiliInput").value;
     let francais = document.getElementById("francaisInput").value;
     let etape = document.getElementById("etapeInput").value;
@@ -13,26 +48,17 @@ function ajouterMot() {
         return;
     }
 
-    let container = document.getElementById("wordsTableBody");
-
-    let card = document.createElement("div");
-    card.classList.add("table-card");
-
-    card.innerHTML = `
-        <div class="row">
-            <span contenteditable="true" onblur="modifierMot(this, 'swahili')">${swahili}</span>
-            <span contenteditable="true" onblur="modifierMot(this, 'francais')">${francais}</span>
-        </div>
-        <div class="row">
-            <span contenteditable="true" onblur="modifierMot(this, 'etape')">${etape || "-"}</span>
-            <span contenteditable="true" onblur="modifierMot(this, 'type')">${type || "-"}</span>
-        </div>
-        <div class="actions">
-            <button onclick="supprimerMot(this)">🗑 Supprimer</button>
-        </div>
-    `;
-
-    container.appendChild(card);
+    try {
+        await addDoc(collection(db, "mots"), {
+            swahili,
+            francais,
+            etape: etape || "",
+            type: type || ""
+        });
+        chargerMots();
+    } catch (error) {
+        console.error("Erreur lors de l'ajout du mot:", error);
+    }
 
     // Réinitialiser le formulaire
     document.getElementById("swahiliInput").value = "";
@@ -41,45 +67,29 @@ function ajouterMot() {
     document.getElementById("typeInput").value = "";
 }
 
-function supprimerMot(button) {
-    let card = button.parentElement.parentElement;
-    card.remove();
+async function modifierMot(id, field, newValue) {
+    try {
+        const motRef = doc(db, "mots", id);
+        await updateDoc(motRef, { [field]: newValue });
+        console.log(`Modification du champ ${field} : ${newValue}`);
+    } catch (error) {
+        console.error("Erreur lors de la modification du mot:", error);
+    }
 }
 
-function modifierMot(element, field) {
-    console.log(`Modification du champ ${field} : ${element.textContent}`);
-}
-
-function chargerMots(mots) {
-    let container = document.getElementById("wordsTableBody");
-    container.innerHTML = ""; // Nettoyer l'affichage avant de charger
-    
-    mots.forEach(mot => {
-        let card = document.createElement("div");
-        card.classList.add("table-card");
-
-        card.innerHTML = `
-            <div class="row">
-                <span contenteditable="true" onblur="modifierMot(this, 'swahili')">${mot.swahili}</span>
-                <span contenteditable="true" onblur="modifierMot(this, 'francais')">${mot.francais}</span>
-            </div>
-            <div class="row">
-                <span contenteditable="true" onblur="modifierMot(this, 'etape')">${mot.etape || "-"}</span>
-                <span contenteditable="true" onblur="modifierMot(this, 'type')">${mot.type || "-"}</span>
-            </div>
-            <div class="actions">
-                <button onclick="supprimerMot(this)">🗑 Supprimer</button>
-            </div>
-        `;
-
-        container.appendChild(card);
-    });
+async function supprimerMot(id) {
+    try {
+        await deleteDoc(doc(db, "mots", id));
+        chargerMots();
+    } catch (error) {
+        console.error("Erreur lors de la suppression du mot:", error);
+    }
 }
 
 // 📌 Charger les mots au démarrage
-chargerMots();
+document.addEventListener("DOMContentLoaded", chargerMots);
 
-// 📌 Rendre la fonction accessible globalement
+// 📌 Rendre les fonctions accessibles globalement
 window.ajouterMot = ajouterMot;
 window.modifierMot = modifierMot;
 window.supprimerMot = supprimerMot;
