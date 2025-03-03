@@ -29,19 +29,22 @@
     margin-top: 10px;
 }
 
+/* 📌 Bouton principal (cohérent avec le site) */
 .table-card button, .form-card button {
-    padding: 8px 12px;
-    background: #2196F3;
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 1.1em;
     color: white;
+    background: #ff9800;
+    text-decoration: none;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
     transition: background 0.3s ease;
 }
 
 .table-card button:hover, .form-card button:hover {
-    background: #1976D2;
+    background: #e68900;
 }
 
 /* 🌍 Style spécifique pour le formulaire */
