@@ -18,6 +18,28 @@ function verifierMotDePasse() {
     }
 }
 
+// 📌 Fonction pour supprimer tous les utilisateurs
+async function supprimerTousUtilisateurs() {
+    if (!confirm("⚠️ Êtes-vous sûr de vouloir supprimer tous les utilisateurs ? Cette action est irréversible.")) {
+        return;
+    }
+    
+    try {
+        const usersRef = collection(db, "users");
+        const snapshot = await getDocs(usersRef);
+        
+        for (const userDoc of snapshot.docs) {
+            await deleteDoc(doc(db, "users", userDoc.id));
+        }
+        
+        alert("✅ Tous les utilisateurs ont été supprimés avec succès.");
+    } catch (error) {
+        console.error("Erreur lors de la suppression de tous les utilisateurs :", error);
+        alert("❌ Une erreur est survenue. Vérifiez votre connexion à Firebase.");
+    }
+}
+
 // 📌 Rendre les fonctions accessibles globalement
 window.verifierMotDePasse = verifierMotDePasse;
+window.supprimerTousUtilisateurs = supprimerTousUtilisateurs;
 
