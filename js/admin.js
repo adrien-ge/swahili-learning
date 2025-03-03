@@ -27,11 +27,11 @@ async function supprimerTousUtilisateurs() {
     }
     
     try {
-        const usersCollection = collection(db, "users");
-        const snapshot = await getDocs(usersCollection);
+        const usersCollection = await getDocs(collection(db, "users"));
         
-        const deletePromises = snapshot.docs.map(userDoc => deleteDoc(doc(db, "users", userDoc.id)));
-        await Promise.all(deletePromises);
+        for (const userDoc of usersCollection.docs) {
+            await deleteDoc(doc(db, "users", userDoc.id));
+        }
         
         alert("✅ Tous les utilisateurs ont été supprimés avec succès.");
     } catch (error) {
