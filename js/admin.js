@@ -1,8 +1,5 @@
 import { db } from "./firebase-config.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
 // 📌 Mot de passe administrateur (à modifier selon tes besoins)
 const ADMIN_PASSWORD = "123";
 
