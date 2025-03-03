@@ -1,4 +1,4 @@
-import { db } from "../js/firebase-config.js";
+import { db } from "./firebase-config.js";
 import { collection, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // 📌 Fonction pour charger les mots depuis Firebase et les afficher
