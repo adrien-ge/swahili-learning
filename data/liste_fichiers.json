@@ -1,7 +1,6 @@
 {
     "fichiers": [
-        "mots1.json",
-        "mots2.json",
-        "mots3.json"
+        "mots.json",
+        "verbes_50.json"
     ]
 }
