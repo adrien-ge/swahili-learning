@@ -18,29 +18,18 @@
     
     <main>
         <h2>Ajouter un nouveau mot</h2>
-        <form onsubmit="ajouterMot(); return false;">
+        <form onsubmit="ajouterMot(); return false;" class="form-container">
             <input type="text" id="swahiliInput" placeholder="Mot en swahili" required>
             <input type="text" id="francaisInput" placeholder="Traduction en français" required>
             <input type="text" id="etapeInput" placeholder="Étape d'apprentissage">
             <input type="text" id="typeInput" placeholder="Type (verbe, nom, etc.)">
             <button type="submit">Ajouter</button>
         </form>
+        
         <h2>Liste des mots</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Swahili</th>
-                    <th>Français</th>
-                    <th>Étape</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <div class="table-container" id="wordsTableBody">
-                <!-- Les mots seront insérés ici sous forme de vignettes -->
-            </div>
-            
-        </table>
+        <div class="table-container" id="wordsTableBody">
+            <!-- Les mots seront insérés ici sous forme de vignettes -->
+        </div>
     </main>
 </body>
 </html>
