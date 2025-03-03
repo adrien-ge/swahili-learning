@@ -7,8 +7,8 @@ body {
     padding: 20px;
 }
 
-/* 📌 Conteneur général pour le tableau et le formulaire */
-.table-container, .form-container {
+/* 📌 Conteneur des vignettes */
+.table-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -16,8 +16,8 @@ body {
     margin-top: 20px;
 }
 
-/* 📌 Styles des cartes */
-.table-card, .form-card {
+/* 📌 Styles des cartes (vignettes) */
+.table-card {
     background: white;
     border-radius: 8px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -25,22 +25,26 @@ body {
     width: 250px;
     text-align: center;
     border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.table-card .row, .form-card .row {
+.table-card .row {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     padding: 5px 0;
     font-size: 1.1em;
     font-weight: bold;
 }
 
-.table-card .actions, .form-card .actions {
+.table-card .actions {
     margin-top: 10px;
 }
 
 /* 📌 Boutons cohérents avec le site */
-.table-card button, .form-card button {
+.table-card button {
     display: inline-block;
     padding: 12px 20px;
     font-size: 1.1em;
@@ -53,12 +57,12 @@ body {
     transition: background 0.3s ease;
 }
 
-.table-card button:hover, .form-card button:hover {
+.table-card button:hover {
     background: #e68900;
 }
 
 /* 📌 Styles spécifiques au formulaire */
-form {
+.form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
