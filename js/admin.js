@@ -1,3 +1,5 @@
+import { db } from "./firebase-config.js";
+
 // 📌 Mot de passe administrateur (à modifier selon tes besoins)
 const ADMIN_PASSWORD = "123";
 
