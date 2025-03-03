@@ -17,15 +17,28 @@ async function supprimerTousLesMots() {
     }
 }
 
-// 📌 Fonction pour charger et insérer tous les fichiers JSON après suppression
+// 📌 Fonction pour charger et insérer tous les fichiers JSON présents dans /data/
 async function insererTousLesMotsDepuisJSON() {
     try {
         await supprimerTousLesMots(); // Supprime tous les mots avant d'importer
+        
+        // 📌 Liste dynamique des fichiers JSON présents dans /data/
+        const directory = '../data/';
+        const response = await fetch(directory);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const fichiers = Array.from(doc.querySelectorAll('a'))
+            .map(a => a.href)
+            .filter(href => href.endsWith('.json'));
 
-        const fichiers = ["mots1.json", "mots2.json", "mots3.json"]; // 📌 Ajoutez vos fichiers ici
+        if (fichiers.length === 0) {
+            console.warn("⚠️ Aucun fichier JSON trouvé dans /data/");
+            return;
+        }
 
         for (const fichier of fichiers) {
-            const response = await fetch(`../data/${fichier}`);
+            const response = await fetch(fichier);
             if (!response.ok) {
                 console.warn(`⚠️ Impossible de charger ${fichier}`);
                 continue;
@@ -40,7 +53,7 @@ async function insererTousLesMotsDepuisJSON() {
             }
         }
 
-        alert("✅ Importation de tous les fichiers JSON réussie !");
+        alert("✅ Importation de tous les fichiers JSON réussie après suppression !");
     } catch (error) {
         console.error("❌ Erreur lors de l'importation des fichiers JSON :", error);
     }
