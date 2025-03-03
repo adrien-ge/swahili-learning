@@ -37,12 +37,14 @@ async function supprimerTousUtilisateurs() {
     if (!confirm("⚠️ Êtes-vous sûr de vouloir supprimer tous les utilisateurs ? Cette action est irréversible.")) {
         return;
     }
-    
+
+    const usersCollection = collection(db, "users");
+    const snapshot = await getDocs(usersCollection);
     console.log("📌 Suppression des utilisateurs suivants :");
     snapshot.docs.forEach(userDoc => {
         console.log(userDoc.id, "=>", userDoc.data());
     });
-    
+
     try {
         const usersCollection = collection(db, "users");
         const snapshot = await getDocs(usersCollection);
