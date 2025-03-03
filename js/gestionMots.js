@@ -1,48 +1,5 @@
 import { db } from "../js/firebase-config.js";
 import { collection,addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// 📌 Fonction pour charger les mots depuis Firebase et les afficher
-async function chargerMots() {
-    try {
-        const wordsTableBody = document.getElementById("wordsTableBody");
-        wordsTableBody.innerHTML = ""; // Réinitialiser la table
-
-        const motsSnapshot = await getDocs(collection(db, "mots_swahili"));
-        motsSnapshot.forEach((motDoc) => {
-            const motData = motDoc.data();
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td contenteditable="true" onBlur="modifierMot('${motDoc.id}', 'swahili', this.textContent)">${motData.swahili}</td>
-                <td contenteditable="true" onBlur="modifierMot('${motDoc.id}', 'francais', this.textContent)">${motData.francais}</td>
-                <td contenteditable="true" onBlur="modifierMot('${motDoc.id}', 'etape', this.textContent)">${motData.etape || "-"}</td>
-                <td contenteditable="true" onBlur="modifierMot('${motDoc.id}', 'type', this.textContent)">${motData.type || "-"}</td>
-                <td>
-                    <button onclick="supprimerMot('${motDoc.id}')" style="color: red;">🗑 Supprimer</button>
-                </td>
-            `;
-            wordsTableBody.appendChild(row);
-        });
-    } catch (error) {
-        console.error("❌ Erreur lors du chargement des mots :", error);
-    }
-}
-
-// 📌 Fonction pour modifier un mot
-async function modifierMot(id, champ, valeur) {
-    try {
-        const motRef = doc(db, "mots_swahili", id);
-        await updateDoc(motRef, { [champ]: valeur });
-        console.log(`✅ ${champ} mis à jour pour ${id} : ${valeur}`);
-    } catch (error) {
-        console.error("❌ Erreur lors de la mise à jour :", error);
-    }
-}
-
-
-
-// 📌 Charger les mots au démarrage
-chargerMots();
 function ajouterMot() {
     let swahili = document.getElementById("swahiliInput").value;
     let francais = document.getElementById("francaisInput").value;
@@ -89,6 +46,32 @@ function supprimerMot(button) {
 
 function modifierMot(element, field) {
     console.log(`Modification du champ ${field} : ${element.textContent}`);
+}
+
+function chargerMots(mots) {
+    let container = document.getElementById("wordsTableBody");
+    container.innerHTML = ""; // Nettoyer l'affichage avant de charger
+    
+    mots.forEach(mot => {
+        let card = document.createElement("div");
+        card.classList.add("table-card");
+
+        card.innerHTML = `
+            <div class="row">
+                <span contenteditable="true" onblur="modifierMot(this, 'swahili')">${mot.swahili}</span>
+                <span contenteditable="true" onblur="modifierMot(this, 'francais')">${mot.francais}</span>
+            </div>
+            <div class="row">
+                <span contenteditable="true" onblur="modifierMot(this, 'etape')">${mot.etape || "-"}</span>
+                <span contenteditable="true" onblur="modifierMot(this, 'type')">${mot.type || "-"}</span>
+            </div>
+            <div class="actions">
+                <button onclick="supprimerMot(this)">🗑 Supprimer</button>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
 }
 
 
