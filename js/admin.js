@@ -20,6 +20,19 @@ function verifierMotDePasse() {
     }
 }
 
+// 📌 Fonction pour afficher les utilisateurs dans la console
+async function afficherUtilisateurs() {
+    try {
+        const usersCollection = await getDocs(collection(db, "users"));
+        console.log("📌 Liste des utilisateurs :");
+        usersCollection.docs.forEach(userDoc => {
+            console.log(userDoc.id, "=>", userDoc.data());
+        });
+    } catch (error) {
+        console.error("Erreur lors de la récupération des utilisateurs :", error);
+    }
+}
+
 // 📌 Fonction pour supprimer tous les utilisateurs
 async function supprimerTousUtilisateurs() {
     if (!confirm("⚠️ Êtes-vous sûr de vouloir supprimer tous les utilisateurs ? Cette action est irréversible.")) {
@@ -28,6 +41,11 @@ async function supprimerTousUtilisateurs() {
     
     try {
         const usersCollection = await getDocs(collection(db, "users"));
+        
+        console.log("📌 Suppression des utilisateurs suivants :");
+        usersCollection.docs.forEach(userDoc => {
+            console.log(userDoc.id, "=>", userDoc.data());
+        });
         
         for (const userDoc of usersCollection.docs) {
             await deleteDoc(doc(db, "users", userDoc.id));
@@ -43,4 +61,5 @@ async function supprimerTousUtilisateurs() {
 // 📌 Rendre les fonctions accessibles globalement
 window.verifierMotDePasse = verifierMotDePasse;
 window.supprimerTousUtilisateurs = supprimerTousUtilisateurs;
+window.afficherUtilisateurs = afficherUtilisateurs;
 
