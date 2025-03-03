@@ -1,10 +1,27 @@
 import { db } from "../js/firebase-config.js";
 import { collection, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// 📌 Fonction pour charger et insérer les mots depuis un fichier JSON
-// 📌 Fonction pour charger et insérer tous les fichiers JSON du dossier /data/
+
+// 📌 Fonction pour supprimer tous les mots avant importation
+async function supprimerTousLesMots() {
+    try {
+        const motsSnapshot = await getDocs(collection(db, "mots_swahili"));
+        
+        console.log("📌 Suppression des mots existants...");
+        const deletePromises = motsSnapshot.docs.map(motDoc => deleteDoc(doc(db, "mots_swahili", motDoc.id)));
+        await Promise.all(deletePromises);
+        
+        console.log("✅ Tous les mots ont été supprimés avec succès.");
+    } catch (error) {
+        console.error("❌ Erreur lors de la suppression des mots :", error);
+    }
+}
+
+// 📌 Fonction pour charger et insérer tous les fichiers JSON après suppression
 async function insererTousLesMotsDepuisJSON() {
     try {
+        await supprimerTousLesMots(); // Supprime tous les mots avant d'importer
+
         const fichiers = ["mots1.json", "mots2.json", "mots3.json"]; // 📌 Ajoutez vos fichiers ici
 
         for (const fichier of fichiers) {
