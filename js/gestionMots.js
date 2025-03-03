@@ -43,8 +43,6 @@ async function modifierMot(id, champ, valeur) {
 
 // 📌 Charger les mots au démarrage
 chargerMots();
-
-
 function ajouterMot() {
     let swahili = document.getElementById("swahiliInput").value;
     let francais = document.getElementById("francaisInput").value;
