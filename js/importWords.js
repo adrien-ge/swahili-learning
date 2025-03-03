@@ -22,28 +22,28 @@ async function insererTousLesMotsDepuisJSON() {
     try {
         await supprimerTousLesMots(); // Supprime tous les mots avant d'importer
         
-        // 📌 Liste dynamique des fichiers JSON présents dans /data/
-        const directory = '../data/';
-        const response = await fetch(directory);
-        const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const fichiers = Array.from(doc.querySelectorAll('a'))
-            .map(a => a.href)
-            .filter(href => href.endsWith('.json'));
+        // 📌 Charger la liste des fichiers JSON
+        const response = await fetch("../data/liste_fichiers.json");
+        if (!response.ok) {
+            console.warn("⚠️ Impossible de charger la liste des fichiers JSON.");
+            return;
+        }
 
-        if (fichiers.length === 0) {
-            console.warn("⚠️ Aucun fichier JSON trouvé dans /data/");
+        const data = await response.json();
+        const fichiers = data.fichiers;
+
+        if (!fichiers || fichiers.length === 0) {
+            console.warn("⚠️ Aucun fichier JSON listé dans liste_fichiers.json");
             return;
         }
 
         for (const fichier of fichiers) {
-            const response = await fetch(fichier);
-            if (!response.ok) {
+            const fileResponse = await fetch(`../data/${fichier}`);
+            if (!fileResponse.ok) {
                 console.warn(`⚠️ Impossible de charger ${fichier}`);
                 continue;
             }
-            const mots = await response.json();
+            const mots = await fileResponse.json();
             
             const motsCollection = collection(db, "mots_swahili");
             for (const mot of mots) {
@@ -58,5 +58,6 @@ async function insererTousLesMotsDepuisJSON() {
         console.error("❌ Erreur lors de l'importation des fichiers JSON :", error);
     }
 }
+
 
 window.insererTousLesMotsDepuisJSON = insererTousLesMotsDepuisJSON;
