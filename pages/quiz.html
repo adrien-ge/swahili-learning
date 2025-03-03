@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Swahili</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="module" src="../js/quiz.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Quiz Swahili</h1>
+        <nav>
+            <a href="../index.html">Accueil</a>
+            <a href="../pages/lecons.html">Leçons</a>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>Choisissez la bonne traduction</h2>
+        <p id="swahiliWord">Chargement...</p>
+        <div id="choices">
+            <button class="quiz-btn" onclick="verifierReponse(0)">Option 1</button>
+            <button class="quiz-btn" onclick="verifierReponse(1)">Option 2</button>
+            <button class="quiz-btn" onclick="verifierReponse(2)">Option 3</button>
+        </div>
+        <p id="message"></p>
+    </main>
+</body>
+</html>
