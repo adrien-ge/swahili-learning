@@ -60,9 +60,17 @@ function ajouterMot() {
     card.classList.add("table-card");
 
     card.innerHTML = `
-        <div class="row"><span>${swahili}</span> <span>${francais}</span></div>
-        <div class="row"><span>${etape || "-"}</span> <span>${type || "-"}</span></div>
-        <div class="actions"><button onclick="supprimerMot(this)">Supprimer</button></div>
+        <div class="row">
+            <span contenteditable="true" onblur="modifierMot(this, 'swahili')">${swahili}</span>
+            <span contenteditable="true" onblur="modifierMot(this, 'francais')">${francais}</span>
+        </div>
+        <div class="row">
+            <span contenteditable="true" onblur="modifierMot(this, 'etape')">${etape || "-"}</span>
+            <span contenteditable="true" onblur="modifierMot(this, 'type')">${type || "-"}</span>
+        </div>
+        <div class="actions">
+            <button onclick="supprimerMot(this)">🗑 Supprimer</button>
+        </div>
     `;
 
     container.appendChild(card);
@@ -79,10 +87,13 @@ function supprimerMot(button) {
     card.remove();
 }
 
+function modifierMot(element, field) {
+    console.log(`Modification du champ ${field} : ${element.textContent}`);
+}
+
+
 
 // 📌 Rendre la fonction accessible globalement
 window.ajouterMot = ajouterMot;
-
-// 📌 Rendre les fonctions accessibles globalement
 window.modifierMot = modifierMot;
 window.supprimerMot = supprimerMot;
