@@ -1,5 +1,5 @@
 import { db } from "../js/firebase-config.js";
-import { collection, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection,addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // 📌 Fonction pour charger les mots depuis Firebase et les afficher
 async function chargerMots() {
@@ -53,6 +53,32 @@ async function supprimerMot(id) {
 
 // 📌 Charger les mots au démarrage
 chargerMots();
+// 📌 Fonction pour ajouter un nouveau mot
+async function ajouterMot() {
+    const swahili = document.getElementById("swahiliInput").value.trim();
+    const francais = document.getElementById("francaisInput").value.trim();
+    const etape = document.getElementById("etapeInput").value.trim();
+    const type = document.getElementById("typeInput").value.trim();
+    
+    if (!swahili || !francais) {
+        alert("⚠️ Veuillez remplir les champs Swahili et Français.");
+        return;
+    }
+    
+    try {
+        await addDoc(collection(db, "mots_swahili"), { swahili, francais, etape, type });
+        alert("✅ Mot ajouté avec succès !");
+        document.getElementById("swahiliInput").value = "";
+        document.getElementById("francaisInput").value = "";
+        document.getElementById("etapeInput").value = "";
+        document.getElementById("typeInput").value = "";
+    } catch (error) {
+        console.error("❌ Erreur lors de l'ajout du mot :", error);
+    }
+}
+
+// 📌 Rendre la fonction accessible globalement
+window.ajouterMot = ajouterMot;
 
 // 📌 Rendre les fonctions accessibles globalement
 window.modifierMot = modifierMot;
