@@ -1,5 +1,5 @@
 /* 🌍 Style général pour le tableau et le formulaire */
-.table-container, .form-container {
+.container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -7,7 +7,8 @@
     margin-top: 20px;
 }
 
-.table-card, .form-card {
+/* 🎨 Style des cartes (tableau et formulaire) */
+.card {
     background: white;
     border-radius: 8px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -17,7 +18,7 @@
     border: 1px solid #ddd;
 }
 
-.table-card .row, .form-card .row {
+.card .row {
     display: flex;
     justify-content: space-between;
     padding: 5px 0;
@@ -25,12 +26,12 @@
     font-weight: bold;
 }
 
-.table-card .actions, .form-card .actions {
+.card .actions {
     margin-top: 10px;
 }
 
 /* 📌 Bouton principal (cohérent avec le site) */
-.table-card button, .form-card button {
+.card button {
     display: inline-block;
     padding: 12px 20px;
     font-size: 1.1em;
@@ -43,11 +44,19 @@
     transition: background 0.3s ease;
 }
 
-.table-card button:hover, .form-card button:hover {
+.card button:hover {
     background: #e68900;
 }
 
 /* 🌍 Style spécifique pour le formulaire */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 270px;
+    margin: auto;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -57,9 +66,8 @@ form {
     background: white;
     border-radius: 8px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 270px;
+    width: 100%;
     border: 1px solid #ddd;
-    margin: auto;
 }
 
 form input {

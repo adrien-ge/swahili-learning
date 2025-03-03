@@ -53,28 +53,26 @@ async function supprimerMot(id) {
 
 // 📌 Charger les mots au démarrage
 chargerMots();
-// 📌 Fonction pour ajouter un nouveau mot
-async function ajouterMot() {
-    const swahili = document.getElementById("swahiliInput").value.trim();
-    const francais = document.getElementById("francaisInput").value.trim();
-    const etape = document.getElementById("etapeInput").value.trim();
-    const type = document.getElementById("typeInput").value.trim();
-    
-    if (!swahili || !francais) {
-        alert("⚠️ Veuillez remplir les champs Swahili et Français.");
-        return;
-    }
-    
-    try {
-        await addDoc(collection(db, "mots_swahili"), { swahili, francais, etape, type });
-        alert("✅ Mot ajouté avec succès !");
-        document.getElementById("swahiliInput").value = "";
-        document.getElementById("francaisInput").value = "";
-        document.getElementById("etapeInput").value = "";
-        document.getElementById("typeInput").value = "";
-    } catch (error) {
-        console.error("❌ Erreur lors de l'ajout du mot :", error);
-    }
+
+
+function ajouterMot() {
+    let swahili = document.getElementById("swahiliInput").value;
+    let francais = document.getElementById("francaisInput").value;
+    let etape = document.getElementById("etapeInput").value;
+    let type = document.getElementById("typeInput").value;
+
+    let container = document.getElementById("wordsTableBody");
+
+    let card = document.createElement("div");
+    card.classList.add("table-card");
+
+    card.innerHTML = `
+        <div class="row"><span>${swahili}</span> <span>${francais}</span></div>
+        <div class="row"><span>${etape}</span> <span>${type}</span></div>
+        <div class="actions"><button onclick="supprimerMot(this)">Supprimer</button></div>
+    `;
+
+    container.appendChild(card);
 }
 
 // 📌 Rendre la fonction accessible globalement
