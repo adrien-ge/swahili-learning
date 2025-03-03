@@ -33,21 +33,26 @@ async function afficherUtilisateurs() {
     }
 }
 
-// 📌 Fonction pour supprimer tous les utilisateurs
 async function supprimerTousUtilisateurs() {
     if (!confirm("⚠️ Êtes-vous sûr de vouloir supprimer tous les utilisateurs ? Cette action est irréversible.")) {
         return;
     }
     
+    console.log("📌 Suppression des utilisateurs suivants :");
+    snapshot.docs.forEach(userDoc => {
+        console.log(userDoc.id, "=>", userDoc.data());
+    });
+    
     try {
-        const usersCollection = await getDocs(collection(db, "users"));
+        const usersCollection = collection(db, "users");
+        const snapshot = await getDocs(usersCollection);
         
         console.log("📌 Suppression des utilisateurs suivants :");
-        usersCollection.docs.forEach(userDoc => {
+        snapshot.docs.forEach(userDoc => {
             console.log(userDoc.id, "=>", userDoc.data());
         });
         
-        for (const userDoc of usersCollection.docs) {
+        for (const userDoc of snapshot.docs) {
             await deleteDoc(doc(db, "users", userDoc.id));
         }
         
@@ -57,6 +62,7 @@ async function supprimerTousUtilisateurs() {
         alert("❌ Une erreur est survenue. Vérifiez votre connexion à Firebase.");
     }
 }
+
 
 // 📌 Rendre les fonctions accessibles globalement
 window.verifierMotDePasse = verifierMotDePasse;
