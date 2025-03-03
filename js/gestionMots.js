@@ -6,7 +6,7 @@ async function chargerMots() {
     container.innerHTML = ""; // Nettoyer l'affichage avant de charger
     
     try {
-        const motsSnapshot = await getDocs(collection(db, "mots"));
+        const motsSnapshot = await getDocs(collection(db, "mots_swahili")); // Correction du nom de la collection
         let mots = [];
         motsSnapshot.forEach(doc => {
             mots.push({ id: doc.id, ...doc.data() });
@@ -49,7 +49,7 @@ async function ajouterMot() {
     }
 
     try {
-        await addDoc(collection(db, "mots"), {
+        await addDoc(collection(db, "mots_swahili"), { // Correction du nom de la collection
             swahili,
             francais,
             etape: etape || "",
@@ -69,7 +69,7 @@ async function ajouterMot() {
 
 async function modifierMot(id, field, newValue) {
     try {
-        const motRef = doc(db, "mots", id);
+        const motRef = doc(db, "mots_swahili", id); // Correction du nom de la collection
         await updateDoc(motRef, { [field]: newValue });
         console.log(`Modification du champ ${field} : ${newValue}`);
     } catch (error) {
@@ -79,7 +79,7 @@ async function modifierMot(id, field, newValue) {
 
 async function supprimerMot(id) {
     try {
-        await deleteDoc(doc(db, "mots", id));
+        await deleteDoc(doc(db, "mots_swahili", id)); // Correction du nom de la collection
         chargerMots();
     } catch (error) {
         console.error("Erreur lors de la suppression du mot:", error);
