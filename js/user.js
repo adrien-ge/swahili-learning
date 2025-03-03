@@ -11,10 +11,25 @@ function obtenirDeviceID() {
     return deviceId;
 }
 
-// 📌 Fonction pour enregistrer ou charger un utilisateur
+// 📌 Fonction pour récupérer l'IP de l'utilisateur
+async function obtenirIP() {
+    try {
+        const response = await fetch("https://api64.ipify.org?format=json");
+        const data = await response.json();
+        return data.ip; // Retourne l'adresse IP
+    } catch (error) {
+        console.error("Erreur lors de la récupération de l'IP :", error);
+        return "Inconnue";
+    }
+}
+
+// 📌 Fonction pour enregistrer ou charger un utilisateur avec `device_id` + `ip`
 async function chargerUtilisateur() {
     const deviceId = obtenirDeviceID();
-    const docRef = doc(db, "users", deviceId);
+    const ip = await obtenirIP();
+    const userId = `user_${deviceId}_${ip.replace(/\./g, "_")}`; // Combinaison unique de device_id et IP
+
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
 
     let utilisateur;
@@ -28,7 +43,7 @@ async function chargerUtilisateur() {
         utilisateur = {
             nom: "Anonyme",
             device_id: deviceId,
-            ip: "Inconnue",
+            ip: ip,
             leçon: "Aucune",
             score: 0,
             dateInscription: new Date()
