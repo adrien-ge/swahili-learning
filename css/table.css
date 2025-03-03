@@ -1,4 +1,4 @@
-/* 🌍 Style général */
+/* 🌍 Style général 
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -6,7 +6,7 @@ body {
     margin: 0;
     padding: 20px;
 }
-
+*/
 /* 📌 Conteneur des vignettes */
 .table-container {
     display: flex;
