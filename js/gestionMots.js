@@ -1,5 +1,7 @@
 import { db } from "../js/firebase-config.js";
 import { collection,addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
 function ajouterMot() {
     let swahili = document.getElementById("swahiliInput").value;
     let francais = document.getElementById("francaisInput").value;
@@ -74,7 +76,8 @@ function chargerMots(mots) {
     });
 }
 
-
+// 📌 Charger les mots au démarrage
+chargerMots();
 
 // 📌 Rendre la fonction accessible globalement
 window.ajouterMot = ajouterMot;
