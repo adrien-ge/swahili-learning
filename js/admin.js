@@ -59,8 +59,29 @@ async function supprimerTousUtilisateurs() {
 }
 
 
+// 📌 Fonction pour charger les mots depuis un fichier JSON et les insérer dans Firebase
+async function insererMotsDepuisJSON() {
+    try {
+        const response = await fetch("../data/mots.json"); // 📌 Assurez-vous que le fichier est bien placé
+        const mots = await response.json();
+
+        const motsCollection = collection(db, "mots_swahili");
+
+        for (const mot of mots) {
+            const motRef = doc(motsCollection);
+            await setDoc(motRef, mot);
+            console.log(`✅ Ajouté : ${mot.swahili} -> ${mot.francais}`);
+        }
+
+        alert("✅ Importation des mots réussie !");
+    } catch (error) {
+        console.error("❌ Erreur lors de l'importation des mots :", error);
+    }
+}
+
 // 📌 Rendre les fonctions accessibles globalement
 window.verifierMotDePasse = verifierMotDePasse;
 window.supprimerTousUtilisateurs = supprimerTousUtilisateurs;
 window.afficherUtilisateurs = afficherUtilisateurs;
+window.insererMotsDepuisJSON = insererMotsDepuisJSON;
 
