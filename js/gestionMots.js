@@ -39,17 +39,7 @@ async function modifierMot(id, champ, valeur) {
     }
 }
 
-// 📌 Fonction pour supprimer un mot
-async function supprimerMot(id) {
-    if (!confirm("⚠️ Êtes-vous sûr de vouloir supprimer ce mot ?")) return;
-    try {
-        await deleteDoc(doc(db, "mots_swahili", id));
-        console.log("✅ Mot supprimé :", id);
-        chargerMots(); // Recharger la liste après suppression
-    } catch (error) {
-        console.error("❌ Erreur lors de la suppression :", error);
-    }
-}
+
 
 // 📌 Charger les mots au démarrage
 chargerMots();
@@ -61,6 +51,11 @@ function ajouterMot() {
     let etape = document.getElementById("etapeInput").value;
     let type = document.getElementById("typeInput").value;
 
+    if (!swahili || !francais) {
+        alert("Veuillez remplir au moins le mot en swahili et sa traduction en français.");
+        return;
+    }
+
     let container = document.getElementById("wordsTableBody");
 
     let card = document.createElement("div");
@@ -68,12 +63,24 @@ function ajouterMot() {
 
     card.innerHTML = `
         <div class="row"><span>${swahili}</span> <span>${francais}</span></div>
-        <div class="row"><span>${etape}</span> <span>${type}</span></div>
+        <div class="row"><span>${etape || "-"}</span> <span>${type || "-"}</span></div>
         <div class="actions"><button onclick="supprimerMot(this)">Supprimer</button></div>
     `;
 
     container.appendChild(card);
+
+    // Réinitialiser le formulaire
+    document.getElementById("swahiliInput").value = "";
+    document.getElementById("francaisInput").value = "";
+    document.getElementById("etapeInput").value = "";
+    document.getElementById("typeInput").value = "";
 }
+
+function supprimerMot(button) {
+    let card = button.parentElement.parentElement;
+    card.remove();
+}
+
 
 // 📌 Rendre la fonction accessible globalement
 window.ajouterMot = ajouterMot;
