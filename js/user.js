@@ -1,43 +1,57 @@
 import { db } from "./firebase-config.js";
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, query, where, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// 📌 Fonction pour récupérer l'IP de l'utilisateur
 async function obtenirIP() {
     try {
         const response = await fetch("https://api64.ipify.org?format=json");
         const data = await response.json();
-        return data.ip;
+        return data.ip; // Retourne l'adresse IP
     } catch (error) {
-        console.error("Erreur IP :", error);
+        console.error("Erreur lors de la récupération de l'IP :", error);
         return "Inconnu";
     }
 }
 
-async function identifierUtilisateur() {
-    let userId = localStorage.getItem("user_id");
+// 📌 Fonction pour rechercher un utilisateur par IP
+async function rechercherUtilisateurParIP(ip) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("ip", "==", ip));
+    const querySnapshot = await getDocs(q);
 
-    if (!userId) {
-        const ip = await obtenirIP();
-        userId = `user_${ip.replace(/\./g, "_")}`;
-        localStorage.setItem("user_id", userId);
+    if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        return { id: userDoc.id, ...userDoc.data() }; // Retourne l'utilisateur existant
+    } else {
+        return null; // Aucun utilisateur trouvé
     }
-
-    return userId;
 }
 
-async function chargerUtilisateur() {
-    const userId = await identifierUtilisateur();
-    const docRef = doc(db, "users", userId);
-    const docSnap = await getDoc(docRef);
+// 📌 Fonction pour enregistrer ou charger l'utilisateur
+async function enregistrerUtilisateur() {
+    const ip = await obtenirIP(); // Récupérer l'IP
+    let utilisateur = await rechercherUtilisateurParIP(ip); // Vérifier si l'IP existe déjà
 
-    let utilisateur = { nom: "Anonyme", leçon: "Aucune", score: 0 };
-
-    if (docSnap.exists()) {
-        utilisateur = docSnap.data();
+    if (utilisateur) {
+        console.log("✅ Utilisateur existant trouvé :", utilisateur);
     } else {
-        await setDoc(docRef, utilisateur);
+        // 📌 Nouvel utilisateur à enregistrer
+        utilisateur = {
+            nom: "Anonyme",
+            ip: ip,
+            leçon: "Aucune",
+            score: 0,
+            dateInscription: new Date()
+        };
+
+        const userId = `user_${ip.replace(/\./g, "_")}`;
+        await setDoc(doc(db, "users", userId), utilisateur);
+
+        console.log("👤 Nouvel utilisateur enregistré :", utilisateur);
     }
 
+    // 📌 Afficher le nom de l'utilisateur dans la page
     document.getElementById("nomUtilisateur").textContent = `Bienvenue, ${utilisateur.nom} !`;
 }
 
-export { chargerUtilisateur };
+export { enregistrerUtilisateur };
