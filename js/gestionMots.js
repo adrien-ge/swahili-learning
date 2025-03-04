@@ -73,12 +73,18 @@ async function ajouterMot() {
 async function modifierMot(id, field, newValue) {
     try {
         const motRef = doc(db, "mots_swahili", id);
-        await updateDoc(motRef, { [field]: newValue });
+        const updateData = {
+            [field]: newValue,
+            dateModification: new Date()  // Enregistrer la date actuelle de la modification
+        };
+        await updateDoc(motRef, updateData);
         console.log(`Modification du champ ${field} : ${newValue}`);
+        console.log(`Date de modification mise à jour pour le mot ${id}`);
     } catch (error) {
         console.error("Erreur lors de la modification du mot:", error);
     }
 }
+
 
 async function supprimerMot(id) {
     try {
