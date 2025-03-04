@@ -86,6 +86,16 @@ async function modifierMot(id, field, newValue) {
     }
 }
 
+async function supprimerMot(id) {
+    try {
+        await deleteDoc(doc(db, "mots_swahili", id)); // Correction du nom de la collection
+        chargerMots();
+    } catch (error) {
+        console.error("Erreur lors de la suppression du mot:", error);
+    }
+}
+
+
 // Charger les mots au démarrage
 document.addEventListener("DOMContentLoaded", chargerMots);
 
