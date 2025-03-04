@@ -22,8 +22,10 @@ async function chargerMots() {
                     <span contenteditable="true" onblur="modifierMot('${mot.id}', 'francais', this.textContent)">${mot.francais}</span>
                 </div>
                 <div class="row">
-                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'etape', this.textContent)">${mot.etape || "-"}</span>
-                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'type', this.textContent)">${mot.type || "-"}</span>
+                    <input type="number" value="${mot.etape || 0}" onchange="modifierMot('${mot.id}', 'etape', this.value)">
+                    <select onchange="modifierMot('${mot.id}', 'type', this.value)">
+                        ${obtenirOptionsType(mot.type)}
+                    </select>
                 </div>
                 <div class="actions">
                     <button onclick="supprimerMot('${mot.id}')">🗑 Supprimer</button>
@@ -49,7 +51,7 @@ async function ajouterMot() {
     }
 
     try {
-        await addDoc(collection(db, "mots_swahili"), { // Correction du nom de la collection
+        await addDoc(collection(db, "mots_swahili"), {
             swahili,
             francais,
             etape: etape || "",
@@ -69,7 +71,7 @@ async function ajouterMot() {
 
 async function modifierMot(id, field, newValue) {
     try {
-        const motRef = doc(db, "mots_swahili", id); // Correction du nom de la collection
+        const motRef = doc(db, "mots_swahili", id);
         await updateDoc(motRef, { [field]: newValue });
         console.log(`Modification du champ ${field} : ${newValue}`);
     } catch (error) {
@@ -79,11 +81,18 @@ async function modifierMot(id, field, newValue) {
 
 async function supprimerMot(id) {
     try {
-        await deleteDoc(doc(db, "mots_swahili", id)); // Correction du nom de la collection
+        await deleteDoc(doc(db, "mots_swahili", id));
         chargerMots();
     } catch (error) {
         console.error("Erreur lors de la suppression du mot:", error);
     }
+}
+
+function obtenirOptionsType(typeActuel) {
+    const types = ["verbe", "nom", "adjectif", "autre"]; // Exemple de types
+    return types.map(type => 
+        `<option value="${type}" ${type === typeActuel ? "selected" : ""}>${type}</option>`
+    ).join('');
 }
 
 // 📌 Charger les mots au démarrage

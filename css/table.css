@@ -1,4 +1,4 @@
-/* 🌍 Style général 
+/* 🌍 Style général */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -6,7 +6,7 @@ body {
     margin: 0;
     padding: 20px;
 }
-*/
+
 /* 📌 Conteneur des vignettes */
 .table-container {
     display: flex;
@@ -39,11 +39,15 @@ body {
     font-weight: bold;
 }
 
-.table-card .actions {
-    margin-top: 10px;
+.table-card input[type="number"], .table-card select {
+    width: 90%;
+    padding: 8px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9em;
 }
 
-/* 📌 Boutons cohérents avec le site */
 .table-card button {
     display: inline-block;
     padding: 12px 20px;
@@ -59,50 +63,4 @@ body {
 
 .table-card button:hover {
     background: #e68900;
-}
-
-/* 📌 Styles spécifiques au formulaire */
-.form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 270px;
-    border: 1px solid #ddd;
-    margin: auto;
-}
-
-form input {
-    width: 90%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-form button {
-    width: 100%;
-}
-/* style.css */
-
-/* Bouton Ajouter dans la gestion des mots */
-.form-container button {
-    display: inline-block;
-    padding: 12px 20px;
-    font-size: 1.1em;
-    color: white;
-    background: #ff9800; /* Couleur orange comme le bouton Supprimer */
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.form-container button:hover {
-    background: #e68900; /* Foncer la couleur au survol comme le bouton Supprimer */
 }
