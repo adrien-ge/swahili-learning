@@ -18,11 +18,19 @@
 
     <main>
         <h2>Ajouter un nouveau mot</h2>
+        
         <form onsubmit="ajouterMot(); return false;" class="form-container">
             <input type="text" id="swahiliInput" placeholder="Mot en swahili" required>
             <input type="text" id="francaisInput" placeholder="Traduction en français" required>
-            <input type="text" id="etapeInput" placeholder="Étape d'apprentissage">
-            <input type="text" id="typeInput" placeholder="Type (verbe, nom, etc.)">
+            <input type="number" id="etapeInput" placeholder="Étape d'apprentissage">
+            <select id="typeInput">
+                <option value="">Choisir un type</option>
+                <option value="nom">Nom</option>
+                <option value="verbe">Verbe</option>
+                <option value="adjectif">Adjectif</option>
+                <option value="expression">Expression</option>
+                <option value="autre">Autre</option>
+            </select>
             <button type="submit">Ajouter</button>
         </form>
 
