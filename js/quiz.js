@@ -15,7 +15,6 @@ async function chargerMots() {
     }
 }
 
-// 📌 Fonction pour charger un nouveau mot avec 3 options
 function chargerNouveauMot() {
     if (mots.length === 0) {
         document.getElementById("swahiliWord").textContent = "Aucun mot disponible";
@@ -26,9 +25,17 @@ function chargerNouveauMot() {
     motActuel = mots[Math.floor(Math.random() * mots.length)];
     document.getElementById("swahiliWord").textContent = motActuel.swahili;
     
-    // Sélectionner 2 mauvaises réponses au hasard
-    let mauvaisesReponses = mots.filter(m => m.id !== motActuel.id);
-    mauvaisesReponses = mauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2);
+    // Filtrer les mots pour obtenir ceux du même type que le mot actuel, excluant le mot actuel lui-même
+    let candidatsMauvaisesReponses = mots.filter(m => m.type === motActuel.type && m.id !== motActuel.id);
+    
+    // Si pas assez de candidats du même type, prendre d'autres au hasard pour compléter
+    if (candidatsMauvaisesReponses.length < 2) {
+        let autresMauvaisesReponses = mots.filter(m => m.id !== motActuel.id && !candidatsMauvaisesReponses.includes(m));
+        candidatsMauvaisesReponses = candidatsMauvaisesReponses.concat(autresMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2 - candidatsMauvaisesReponses.length));
+    }
+
+    // Sélectionner 2 mauvaises réponses au hasard parmi les candidats
+    let mauvaisesReponses = candidatsMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2);
     
     // Mélanger les réponses et les afficher
     let reponses = [motActuel, ...mauvaisesReponses].sort(() => 0.5 - Math.random());
@@ -37,6 +44,7 @@ function chargerNouveauMot() {
         btn.dataset.correct = reponses[index].id === motActuel.id;
     });
 }
+
 
 // 📌 Fonction pour vérifier la réponse
 function verifierReponse(index) {
