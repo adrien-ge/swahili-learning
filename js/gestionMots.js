@@ -76,6 +76,16 @@ function obtenirOptionsType(typeActuel) {
     ).join('');
 }
 
+async function modifierMot(id, field, newValue) {
+    try {
+        const motRef = doc(db, "mots_swahili", id); // Correction du nom de la collection
+        await updateDoc(motRef, { [field]: newValue });
+        console.log(`Modification du champ ${field} : ${newValue}`);
+    } catch (error) {
+        console.error("Erreur lors de la modification du mot:", error);
+    }
+}
+
 // Charger les mots au démarrage
 document.addEventListener("DOMContentLoaded", chargerMots);
 
