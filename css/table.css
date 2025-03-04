@@ -87,3 +87,22 @@ form input {
 form button {
     width: 100%;
 }
+/* style.css */
+
+/* Bouton Ajouter dans la gestion des mots */
+.form-container button {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    color: white;
+    background: #ff9800; /* Couleur orange comme le bouton Supprimer */
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-container button:hover {
+    background: #e68900; /* Foncer la couleur au survol comme le bouton Supprimer */
+}
