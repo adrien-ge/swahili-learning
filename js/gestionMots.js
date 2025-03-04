@@ -96,7 +96,7 @@ async function supprimerMot(id) {
 }
 
 function obtenirOptionsType(typeActuel) {
-    const types = ["verbe", "nom", "adjectif", "autre"]; // Exemple de types
+    const types = ["verbe", "nom", "adjectif", "expression", "autre"]; // Exemple de types
     return types.map(type => 
         `<option value="${type}" ${type === typeActuel ? "selected" : ""}>${type}</option>`
     ).join('');
