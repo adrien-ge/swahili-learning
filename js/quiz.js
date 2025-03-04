@@ -57,7 +57,12 @@ async function verifierReponse(index) {
 
     // Récupérer les informations de l'utilisateur, incluant userId
     const utilisateur = await chargerUtilisateur();
-    const userId = utilisateur.userId; // userId est dérivé dans chargerUtilisateur
+    const userId = utilisateur.userId;  // Assure-toi que 'userId' est bien défini
+    if (!userId) {
+        console.error("L'ID de l'utilisateur n'est pas défini.");
+        return;
+    }
+    
 
     nombreTotalQuestions++; // Incrémenter le nombre total de questions à chaque réponse
 
