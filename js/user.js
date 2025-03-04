@@ -54,7 +54,12 @@ async function chargerUtilisateur() {
     }
 
     // 📌 Afficher le nom de l'utilisateur sur la page
+    try {
     document.getElementById("nomUtilisateur").textContent = `Bienvenue, ${utilisateur.nom} !`;
+    } catch (error) {
+    console.error("Erreur lors de l'affichage du nom de l'utilisateur':", error);
+    return "Inconnue";
+}
 }
 
 export { chargerUtilisateur };
