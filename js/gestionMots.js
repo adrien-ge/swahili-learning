@@ -95,6 +95,23 @@ function obtenirOptionsType(typeActuel) {
 // Charger les mots au démarrage
 document.addEventListener("DOMContentLoaded", chargerMots);
 
+document.getElementById("initializeDatesBtn").addEventListener("click", async function() {
+    const querySnapshot = await getDocs(collection(db, "mots_swahili"));
+    let count = 0;
+    querySnapshot.forEach(async (docSnapshot) => {
+        if (!docSnapshot.data().dateEnregistrement) {  // Vérifier si le champ dateEnregistrement existe
+            const docRef = doc(db, "mots_swahili", docSnapshot.id);
+            const updateTimestamp = new Date();  // Utiliser la date actuelle
+            await updateDoc(docRef, {
+                dateEnregistrement: updateTimestamp
+            });
+            console.log(`Date ajoutée à ${docSnapshot.id}`);
+            count++;
+        }
+    });
+    console.log(`Total de ${count} documents mis à jour avec des dates d'enregistrement.`);
+});
+
 // Rendre les fonctions accessibles globalement
 window.ajouterMot = ajouterMot;
 window.modifierMot = modifierMot;
