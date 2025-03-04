@@ -75,7 +75,7 @@ async function modifierMot(id, field, newValue) {
         const motRef = doc(db, "mots_swahili", id);
         const updateData = {
             [field]: newValue,
-            dateModification: new Date()  // Enregistrer la date actuelle de la modification
+            dateEnregistrement: new Date()  // Enregistrer la date actuelle de la modification
         };
         await updateDoc(motRef, updateData);
         console.log(`Modification du champ ${field} : ${newValue}`);
