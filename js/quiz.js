@@ -45,7 +45,9 @@ function chargerNouveauMot() {
     });
 }
 
-
+// Déclaration des variables globales pour suivre l'état du quiz
+let nombreTotalQuestions = 0;
+let nombreReponsesCorrectes = 0;
 // 📌 Fonction pour vérifier la réponse
 import { chargerUtilisateur } from '../js/user.js'; // Assure-toi que le chemin d'importation est correct
 
