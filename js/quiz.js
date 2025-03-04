@@ -54,17 +54,15 @@ async function verifierReponse(index) {
     if (correct) {
         message.textContent = "✅ Bonne réponse !";
         message.style.color = "green";
+        // Charger un nouveau mot pour la prochaine question
+        setTimeout(() => {
+        message.textContent = "";
+        chargerNouveauMot();
+        }, 1000);
     } else {
         message.textContent = "❌ Mauvaise réponse, essayez encore.";
         message.style.color = "red";
     }
-
-
-    // Charger un nouveau mot pour la prochaine question
-    setTimeout(() => {
-        message.textContent = "";
-        chargerNouveauMot();
-    }, 1000);
 }
 
 
