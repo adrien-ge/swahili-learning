@@ -1,12 +1,12 @@
 import { db } from "../js/firebase-config.js";
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 async function chargerMots() {
     let container = document.getElementById("wordsTableBody");
     container.innerHTML = "";  // Nettoyer l'affichage avant de charger
 
     try {
-        const querySnapshot = await getDocs(query(collection(db, "mots_swahili"), orderBy("dateEnregistrement", "desc")));  // Trier par dateEnregistrement en ordre décroissant
+        const querySnapshot = await getDocs(collection(db, "mots_swahili"));  // Pas de tri pour éviter les erreurs
         let mots = [];
         querySnapshot.forEach(doc => {
             mots.push({ id: doc.id, ...doc.data() });
@@ -48,15 +48,12 @@ async function ajouterMot() {
         return;
     }
 
-    const timestamp = new Date();  // Créer un objet Date pour le timestamp actuel
-
     try {
         await addDoc(collection(db, "mots_swahili"), {
             swahili,
             francais,
             etape: etape || "",
-            type: type || "",
-            dateEnregistrement: timestamp  // Enregistrer le timestamp
+            type: type || ""
         });
         chargerMots();
     } catch (error) {
