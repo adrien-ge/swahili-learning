@@ -69,16 +69,9 @@ async function ajouterMot() {
     document.getElementById("typeInput").value = "";
 }
 
-function obtenirOptionsType(typeActuel) {
-    const types = ["verbe", "nom", "adjectif", "autre"]; // Exemple de types
-    return types.map(type => 
-        `<option value="${type}" ${type === typeActuel ? "selected" : ""}>${type}</option>`
-    ).join('');
-}
-
 async function modifierMot(id, field, newValue) {
     try {
-        const motRef = doc(db, "mots_swahili", id); // Correction du nom de la collection
+        const motRef = doc(db, "mots_swahili", id);
         await updateDoc(motRef, { [field]: newValue });
         console.log(`Modification du champ ${field} : ${newValue}`);
     } catch (error) {
@@ -88,13 +81,19 @@ async function modifierMot(id, field, newValue) {
 
 async function supprimerMot(id) {
     try {
-        await deleteDoc(doc(db, "mots_swahili", id)); // Correction du nom de la collection
+        await deleteDoc(doc(db, "mots_swahili", id));
         chargerMots();
     } catch (error) {
         console.error("Erreur lors de la suppression du mot:", error);
     }
 }
 
+function obtenirOptionsType(typeActuel) {
+    const types = ["verbe", "nom", "adjectif", "autre"]; // Exemple de types
+    return types.map(type => 
+        `<option value="${type}" ${type === typeActuel ? "selected" : ""}>${type}</option>`
+    ).join('');
+}
 
 // Charger les mots au démarrage
 document.addEventListener("DOMContentLoaded", chargerMots);
