@@ -47,22 +47,45 @@ function chargerNouveauMot() {
 
 
 // 📌 Fonction pour vérifier la réponse
-function verifierReponse(index) {
+import { chargerUtilisateur } from '../js/user.js'; // Assure-toi que le chemin d'importation est correct
+
+async function verifierReponse(index) {
     const boutons = document.querySelectorAll(".quiz-btn");
     const message = document.getElementById("message");
-    
-    if (boutons[index].dataset.correct === "true") {
+
+    // Récupérer les informations de l'utilisateur, incluant userId
+    const utilisateur = await chargerUtilisateur();
+    const userId = utilisateur.userId; // userId est dérivé dans chargerUtilisateur
+
+    nombreTotalQuestions++; // Incrémenter le nombre total de questions à chaque réponse
+
+    let correct = boutons[index].dataset.correct === "true";
+
+    if (correct) {
+        nombreReponsesCorrectes++; // Incrémenter le nombre de réponses correctes si la réponse est correcte
         message.textContent = "✅ Bonne réponse !";
         message.style.color = "green";
-        setTimeout(() => {
-            message.textContent = "";
-            chargerNouveauMot();
-        }, 1000);
     } else {
         message.textContent = "❌ Mauvaise réponse, essayez encore.";
         message.style.color = "red";
     }
+
+    // Mise à jour des résultats de l'utilisateur dans Firestore
+    const userRef = doc(db, "resultats", userId);
+    await updateDoc(userRef, {
+        scoreTotal: increment(nombreTotalQuestions),
+        questionsRepondues: increment(1),
+        reponsesCorrectes: correct ? increment(1) : increment(0),
+        derniereSession: serverTimestamp() // Horodatage de la dernière session
+    });
+
+    // Charger un nouveau mot pour la prochaine question
+    setTimeout(() => {
+        message.textContent = "";
+        chargerNouveauMot();
+    }, 1000);
 }
+
 
 // Charger les mots au démarrage
 chargerMots();
