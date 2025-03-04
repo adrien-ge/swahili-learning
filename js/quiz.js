@@ -78,14 +78,14 @@ async function verifierReponse(index) {
     }
 
     // Mise à jour des résultats de l'utilisateur dans Firestore
-    const userRef = doc(db, "resultats", userId);
+    /*const userRef = doc(db, "resultats", userId);
     await updateDoc(userRef, {
         scoreTotal: increment(nombreTotalQuestions),
         questionsRepondues: increment(1),
         reponsesCorrectes: correct ? increment(1) : increment(0),
         derniereSession: serverTimestamp() // Horodatage de la dernière session
     });
-
+*/
     // Charger un nouveau mot pour la prochaine question
     setTimeout(() => {
         message.textContent = "";
