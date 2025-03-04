@@ -55,36 +55,44 @@
 .table-card button:hover {
     background: #e68900;
 }
+
 /* 📌 Styles spécifiques au formulaire d'ajout de mots */
 .form-container {
     display: flex;
-    flex-direction: column; /* Organiser les champs en colonne */
-    align-items: center; /* Centrer les éléments dans le conteneur */
-    gap: 10px; /* Espacer légèrement les éléments */
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     padding: 20px;
     background: white;
     border-radius: 8px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 90%; /* Adapter la largeur à la taille de l'écran */
-    max-width: 500px; /* Limiter la largeur maximale */
-    margin: 20px auto; /* Centrer le formulaire et ajouter de la marge autour */
+    width: 90%;
+    max-width: 300px;  /* Réduire la largeur maximale pour ressembler aux cartes existantes */
+    margin: 20px auto;
 }
 
-.form-container input, .form-container button {
-    width: 100%; /* Assurer que les champs prennent toute la largeur */
-    padding: 10px;
+.form-container input, .form-container select, .form-container button {
+    width: 100%;
+    padding: 8px;  /* Ajuster le padding pour uniformiser avec les autres champs */
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1em;
+    font-size: 0.9em;  /* Ajuster la taille de la police pour uniformité */
+}
+
+.form-container select {
+    background: white;
+    cursor: pointer;
 }
 
 .form-container button {
-    background-color: #009688; /* Couleur d'arrière-plan du bouton */
-    color: white; /* Couleur du texte du bouton */
-    cursor: pointer; /* Style du curseur pour indiquer qu'il est cliquable */
-    transition: background-color 0.3s; /* Transition pour l'effet au survol */
+    background-color: #009688;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .form-container button:hover {
-    background-color: #00796b; /* Foncer le bouton lors du survol */
+    background-color: #00796b;
 }
+
+
