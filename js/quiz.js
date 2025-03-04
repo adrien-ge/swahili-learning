@@ -1,5 +1,5 @@
 import { db } from "../js/firebase-config.js";
-import { collection, getDocs, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 let mots = [];
 let motActuel = {};
@@ -45,31 +45,13 @@ function chargerNouveauMot() {
     });
 }
 
-// Déclaration des variables globales pour suivre l'état du quiz
-let nombreTotalQuestions = 0;
-let nombreReponsesCorrectes = 0;
-// 📌 Fonction pour vérifier la réponse
-import { chargerUtilisateur } from '../js/user.js'; // Assure-toi que le chemin d'importation est correct
-
 async function verifierReponse(index) {
     const boutons = document.querySelectorAll(".quiz-btn");
     const message = document.getElementById("message");
 
-    // Récupérer les informations de l'utilisateur, incluant userId
-    const utilisateur = await chargerUtilisateur();
-    const userId = utilisateur.userId;  // Assure-toi que 'userId' est bien défini
-    if (!userId) {
-        console.error("L'ID de l'utilisateur n'est pas défini.");
-        return;
-    }
-    
-
-    nombreTotalQuestions++; // Incrémenter le nombre total de questions à chaque réponse
-
     let correct = boutons[index].dataset.correct === "true";
 
     if (correct) {
-        nombreReponsesCorrectes++; // Incrémenter le nombre de réponses correctes si la réponse est correcte
         message.textContent = "✅ Bonne réponse !";
         message.style.color = "green";
     } else {
@@ -77,15 +59,7 @@ async function verifierReponse(index) {
         message.style.color = "red";
     }
 
-    // Mise à jour des résultats de l'utilisateur dans Firestore
-    /*const userRef = doc(db, "resultats", userId);
-    await updateDoc(userRef, {
-        scoreTotal: increment(nombreTotalQuestions),
-        questionsRepondues: increment(1),
-        reponsesCorrectes: correct ? increment(1) : increment(0),
-        derniereSession: serverTimestamp() // Horodatage de la dernière session
-    });
-*/
+
     // Charger un nouveau mot pour la prochaine question
     setTimeout(() => {
         message.textContent = "";
