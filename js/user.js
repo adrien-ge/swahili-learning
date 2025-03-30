@@ -29,13 +29,13 @@ async function obtenirIP() {
 
 // 📌 Connexion anonyme à Firebase
 signInAnonymously(auth)
-  .then(() => {
-    console.log("✅ Connecté anonymement à Firebase");
-    chargerUtilisateur();
-  })
-  .catch((error) => {
-    console.error("❌ Erreur de connexion anonyme :", error);
-  });
+    .then(() => {
+        console.log("✅ Connecté anonymement à Firebase");
+        chargerUtilisateur();
+    })
+    .catch((error) => {
+        console.error("❌ Erreur de connexion anonyme :", error);
+    });
 
 // 📌 Charger ou créer l'utilisateur
 async function chargerUtilisateur() {
@@ -64,36 +64,58 @@ async function chargerUtilisateur() {
         console.log("👤 Nouvel utilisateur enregistré :", utilisateur);
     }
 
+    // 📌 Afficher le nom
     const nomElement = document.getElementById("nomUtilisateur");
     if (nomElement) {
         nomElement.textContent = `Bienvenue, ${utilisateur.nom} !`;
     }
+
+    // 📌 Si l'utilisateur a un nom ≠ "Anonyme", cacher le formulaire et montrer le bouton
+    if (utilisateur.nom && utilisateur.nom !== "Anonyme") {
+        const form = document.getElementById("formPrenom");
+        const modifierBtn = document.getElementById("modifierPrenomBtn");
+        if (form) form.style.display = "none";
+        if (modifierBtn) modifierBtn.style.display = "inline-block";
+    }
 }
 
-// 📌 Mise à jour du prénom
+// 📌 Gestion du formulaire prénom
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formPrenom");
-    if (!form) return;
+    const input = document.getElementById("inputPrenom");
+    const modifierBtn = document.getElementById("modifierPrenomBtn");
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const prenom = document.getElementById("inputPrenom").value.trim();
-        if (!prenom) return;
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const prenom = input.value.trim();
+            if (!prenom) return;
 
-        const deviceId = localStorage.getItem("device_id");
-        const ip = localStorage.getItem("last_ip");
-        const userId = `user_${deviceId}_${ip?.replace(/\./g, "_") || "Inconnue"}`;
+            const deviceId = localStorage.getItem("device_id");
+            const ip = localStorage.getItem("last_ip");
+            const userId = `user_${deviceId}_${ip?.replace(/\./g, "_") || "Inconnue"}`;
 
-        const userRef = doc(db, "users", userId);
+            const userRef = doc(db, "users", userId);
 
-        try {
-            await updateDoc(userRef, { nom: prenom });
-            document.getElementById("nomUtilisateur").textContent = `Bienvenue, ${prenom} !`;
-            document.getElementById("inputPrenom").value = "";
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour du prénom :", error);
-        }
-    });
+            try {
+                await updateDoc(userRef, { nom: prenom });
+                document.getElementById("nomUtilisateur").textContent = `Bienvenue, ${prenom} !`;
+                input.value = "";
+                form.style.display = "none";
+                if (modifierBtn) modifierBtn.style.display = "inline-block";
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour du prénom :", error);
+            }
+        });
+    }
+
+    // 📌 Réafficher le formulaire si on clique sur le bouton "Modifier"
+    if (modifierBtn) {
+        modifierBtn.addEventListener("click", () => {
+            form.style.display = "block";
+            modifierBtn.style.display = "none";
+        });
+    }
 });
 
 export { chargerUtilisateur };
