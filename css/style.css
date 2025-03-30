@@ -173,3 +173,10 @@ footer {
     margin-top: 10px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
+
+.form-container input,
+.form-container button {
+    padding: 12px;
+    font-size: 1.1em;
+    border-radius: 5px;
+}
