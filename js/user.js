@@ -1,5 +1,7 @@
 import { db } from "./firebase-config.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { auth } from "./firebase-config.js";
+import { signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // 📌 Fonction pour récupérer ou générer un `device_id`
 function obtenirDeviceID() {
@@ -22,7 +24,16 @@ async function obtenirIP() {
         return "Inconnue";
     }
 }
-
+// 📌 Fonction principale : se connecter anonymement puis charger les infos utilisateur
+signInAnonymously(auth)
+  .then(() => {
+    console.log("✅ Connecté anonymement à Firebase");
+    chargerUtilisateur(); // Lancer le chargement après connexion
+  })
+  .catch((error) => {
+    console.error("❌ Erreur de connexion anonyme :", error);
+  });
+  
 // 📌 Fonction pour enregistrer ou charger un utilisateur avec `device_id` + `ip`
 async function chargerUtilisateur() {
     const deviceId = obtenirDeviceID();
