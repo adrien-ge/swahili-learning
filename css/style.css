@@ -160,3 +160,16 @@ footer {
         width: 90%;
     }
 }
+
+/* ✨ Mise en valeur du nom utilisateur */
+.user-welcome {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #009688;
+    background: #e0f2f1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
