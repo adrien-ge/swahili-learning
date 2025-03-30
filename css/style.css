@@ -71,6 +71,19 @@ p {
     background: #e68900;
 }
 
+button.btn {
+    border: none; /* ✅ supprime la ligne noire */
+    cursor: pointer;
+    background: #ff9800;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+button.btn:hover {
+    background: #e68900;
+}
+
+
 /* 📌 Quiz - Boutons */
 .quiz-btn {
     display: inline-block;
