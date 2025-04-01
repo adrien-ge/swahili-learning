@@ -31,7 +31,7 @@ function chargerNouveauMot() {
         if (titleEl) titleEl.textContent = "Quel est le mot en Swahili ?";
     } else {
         questionEl.textContent = motActuel.swahili;
-        if (titleEl) titleEl.textContent = "Choisissez la bonne traduction";
+        if (titleEl) titleEl.textContent = "Quel est le mot en Francais ?";
     }
 
     let candidatsMauvaisesReponses = mots.filter(m => m.type === motActuel.type && m.id !== motActuel.id);
@@ -71,7 +71,7 @@ async function verifierReponse(index) {
 function basculerMode() {
     modeInverse = !modeInverse;
     const bouton = document.getElementById("toggleModeBtn");
-    if (bouton) bouton.textContent = modeInverse ? "🔄 Passer en mode normal" : "🔄 Passer en mode inversé";
+    if (bouton) bouton.textContent = modeInverse ? "🔄 Inverser (Francais - Swahili)" : "🔄 Inverser (Swahili - Francais)";
     chargerNouveauMot();
 }
 
