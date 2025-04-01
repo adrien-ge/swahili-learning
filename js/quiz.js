@@ -3,6 +3,7 @@ import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/f
 
 let mots = [];
 let motActuel = {};
+let modeInverse = false; // false = Swahili -> Français, true = Français -> Swahili
 
 // 📌 Fonction pour récupérer les mots en Swahili depuis Firebase
 async function chargerMots() {
@@ -20,27 +21,30 @@ function chargerNouveauMot() {
         document.getElementById("swahiliWord").textContent = "Aucun mot disponible";
         return;
     }
-    
-    // Sélectionner un mot au hasard
+
     motActuel = mots[Math.floor(Math.random() * mots.length)];
-    document.getElementById("swahiliWord").textContent = motActuel.swahili;
-    
-    // Filtrer les mots pour obtenir ceux du même type que le mot actuel, excluant le mot actuel lui-même
+    const questionEl = document.getElementById("swahiliWord");
+    const titleEl = document.getElementById("quizTitle");
+
+    if (modeInverse) {
+        questionEl.textContent = motActuel.francais;
+        if (titleEl) titleEl.textContent = "Quel est le mot en Swahili ?";
+    } else {
+        questionEl.textContent = motActuel.swahili;
+        if (titleEl) titleEl.textContent = "Choisissez la bonne traduction";
+    }
+
     let candidatsMauvaisesReponses = mots.filter(m => m.type === motActuel.type && m.id !== motActuel.id);
-    
-    // Si pas assez de candidats du même type, prendre d'autres au hasard pour compléter
     if (candidatsMauvaisesReponses.length < 2) {
         let autresMauvaisesReponses = mots.filter(m => m.id !== motActuel.id && !candidatsMauvaisesReponses.includes(m));
         candidatsMauvaisesReponses = candidatsMauvaisesReponses.concat(autresMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2 - candidatsMauvaisesReponses.length));
     }
 
-    // Sélectionner 2 mauvaises réponses au hasard parmi les candidats
     let mauvaisesReponses = candidatsMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2);
-    
-    // Mélanger les réponses et les afficher
+
     let reponses = [motActuel, ...mauvaisesReponses].sort(() => 0.5 - Math.random());
     document.querySelectorAll(".quiz-btn").forEach((btn, index) => {
-        btn.textContent = reponses[index].francais;
+        btn.textContent = modeInverse ? reponses[index].swahili : reponses[index].francais;
         btn.dataset.correct = reponses[index].id === motActuel.id;
     });
 }
@@ -54,10 +58,9 @@ async function verifierReponse(index) {
     if (correct) {
         message.textContent = "✅ Bonne réponse !";
         message.style.color = "green";
-        // Charger un nouveau mot pour la prochaine question
         setTimeout(() => {
-        message.textContent = "";
-        chargerNouveauMot();
+            message.textContent = "";
+            chargerNouveauMot();
         }, 1000);
     } else {
         message.textContent = "❌ Mauvaise réponse, essayez encore.";
@@ -65,9 +68,15 @@ async function verifierReponse(index) {
     }
 }
 
+function basculerMode() {
+    modeInverse = !modeInverse;
+    const bouton = document.getElementById("toggleModeBtn");
+    if (bouton) bouton.textContent = modeInverse ? "🔄 Passer en mode normal" : "🔄 Passer en mode inversé";
+    chargerNouveauMot();
+}
 
-// Charger les mots au démarrage
+document.getElementById("toggleModeBtn")?.addEventListener("click", basculerMode);
+
+// 📌 Initialisation
 chargerMots();
-
-// 📌 Rendre la fonction globale
 window.verifierReponse = verifierReponse;
