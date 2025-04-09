@@ -2,9 +2,11 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     background-color: #f4f4f4;
     text-align: center;
+    line-height: 1.6;
+    color: #333;
 }
 
 /* 📌 Header */
@@ -43,9 +45,15 @@ main {
     margin: auto;
 }
 
+h1 {
+    text-align: center;
+    color: #4CAF50;
+}
+
 h2 {
-    font-size: 1.6em;
+    color: #2196F3;
     margin-bottom: 10px;
+    font-size: 1.6em;
 }
 
 p {
@@ -54,129 +62,45 @@ p {
     line-height: 1.5;
 }
 
-/* 📌 Bouton principal */
-.btn {
-    display: inline-block;
-    padding: 12px 20px;
-    font-size: 1.1em;
-    color: white;
-    background: #ff9800;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 15px;
-    transition: background 0.3s ease;
-}
-
-.btn:hover {
-    background: #e68900;
-}
-
-button.btn {
-    border: none; /* ✅ supprime la ligne noire */
-    cursor: pointer;
-    background: #ff9800;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-button.btn:hover {
-    background: #e68900;
-}
-
-
-/* 📌 Quiz - Boutons */
-.quiz-btn {
-    display: inline-block;
-    width: 40%;
-    margin: 10px;
-    padding: 12px;
-    font-size: 1em;
-    color: white;
-    background: #2196F3;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.quiz-btn:hover {
-    background: #1976D2;
-}
-
-/* 📌 Zone de progression */
-#score, #niveau, #badges {
+.particle {
+    font-weight: bold;
     font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-}
-
-/* 📌 Footer */
-footer {
-    background: #333;
-    color: white;
-    padding: 12px;
-    font-size: 0.9em;
-    margin-top: 30px;
-}
-
-/* 🌍 Adaptation pour grands écrans */
-@media (min-width: 1024px) {
-    nav {
-        gap: 20px;
-    }
-    nav a {
-        font-size: 1.1em;
-        padding: 12px 18px;
-    }
-    
-    .quiz-btn {
-        width: 35%;
-    }
-}
-
-/* 🌍 Adaptation pour tablettes */
-@media (max-width: 1024px) {
-    nav {
-        gap: 12px;
-    }
-    .quiz-btn {
-        width: 50%;
-    }
-}
-
-/* 🌍 Adaptation pour mobiles */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-    }
-    nav a {
-        display: block;
-        margin-bottom: 5px;
-    }
-    h2 {
-        font-size: 1.4em;
-    }
-    .btn, .quiz-btn {
-        width: 90%;
-    }
-}
-
-/* ✨ Mise en valeur du nom utilisateur */
-.user-welcome {
-    font-size: 1.4em;
-    font-weight: bold;
-    color: #009688;
-    background: #e0f2f1;
-    padding: 12px 20px;
-    border-radius: 8px;
     display: inline-block;
-    margin-top: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
 }
 
-.form-container input,
-.form-container button {
-    padding: 12px;
-    font-size: 1.1em;
-    border-radius: 5px;
+.po { background-color: #FF9800; }
+.ki { background-color: #9C27B0; }
+.ka { background-color: #03A9F4; }
+.me { background-color: #4CAF50; }
+.ta { background-color: #E91E63; }
+.o  { background-color: #795548; }
+
+.example {
+    background-color: #e0f7fa;
+    border-left: 5px solid #0097A7;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
 }
