@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const deviceId = localStorage.getItem("device_id");
             const ip = localStorage.getItem("last_ip");
-            const userId = `user_${deviceId} || "Inconnue"}`;
+            const userId = `${deviceId} || "Inconnue"}`;
 
             const userRef = doc(db, "users", userId);
 
