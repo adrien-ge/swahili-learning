@@ -41,7 +41,7 @@ signInAnonymously(auth)
 async function chargerUtilisateur() {
     const deviceId = obtenirDeviceID();
     const ip = await obtenirIP();
-    const userId = `user_${deviceId}_${ip.replace(/\./g, "_")}`;
+    const userId = `user_${deviceId}`;
 
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const deviceId = localStorage.getItem("device_id");
             const ip = localStorage.getItem("last_ip");
-            const userId = `user_${deviceId}_${ip?.replace(/\./g, "_") || "Inconnue"}`;
+            const userId = `user_${deviceId} || "Inconnue"}`;
 
             const userRef = doc(db, "users", userId);
 
