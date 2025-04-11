@@ -41,7 +41,7 @@ async function chargerUtilisateur() {
         console.log("✅ Utilisateur existant chargé :", utilisateur);
     } else {
         utilisateur = {
-            nom: "Anonyme",
+            nom: "",
             device_id: deviceId,
             leçon: "Aucune",
             score: 0,
