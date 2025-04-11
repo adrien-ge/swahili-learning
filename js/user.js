@@ -61,7 +61,6 @@ async function chargerUtilisateur() {
     }
 }
 
-export { chargerUtilisateur };
 
 // 📌 Fonction pour récupérer l'IP de l'utilisateur
 async function obtenirIP() {
