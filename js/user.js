@@ -15,19 +15,6 @@ function obtenirDeviceID() {
     return deviceId;
 }
 
-// 📌 Fonction pour récupérer l'IP de l'utilisateur (optionnel, mais stockée localement)
-async function obtenirIP() {
-    try {
-        const response = await fetch("https://api64.ipify.org?format=json");
-        const data = await response.json();
-        localStorage.setItem("last_ip", data.ip); // pour un usage éventuel ultérieur
-        return data.ip;
-    } catch (error) {
-        console.error("Erreur lors de la récupération de l'IP :", error);
-        return "Inconnue";
-    }
-}
-
 // 📌 Connexion anonyme à Firebase
 signInAnonymously(auth)
     .then(() => {
