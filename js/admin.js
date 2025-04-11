@@ -63,3 +63,61 @@ window.verifierMotDePasse = verifierMotDePasse;
 window.supprimerTousUtilisateurs = supprimerTousUtilisateurs;
 window.afficherUtilisateurs = afficherUtilisateurs;
 
+// 📌 Fonction pour nettoyer les anciens utilisateurs avec IP dans l'ID
+async function nettoyerUtilisateurs() {
+    if (!confirm("⚠️ Es-tu sûr de vouloir nettoyer les anciens utilisateurs ? Cette action est irréversible.")) {
+        return;
+    }
+
+    try {
+        const usersSnapshot = await getDocs(collection(db, "users"));
+
+        const deletePromises = [];
+        const createPromises = [];
+
+        usersSnapshot.forEach(async userDoc => {
+            const userId = userDoc.id;
+
+            // Vérifier si l'ID contient un "_"
+            if (userId.includes("_")) {
+                const data = userDoc.data();
+
+                // Extraire uniquement le device_id
+                const deviceId = data.device_id || userId.split("_")[1];
+
+                if (!deviceId) {
+                    console.warn(`⚠️ Aucun device_id trouvé pour l'utilisateur : ${userId}`);
+                    return;
+                }
+
+                const newUserRef = doc(db, "users", deviceId);
+
+                // Vérifie si un utilisateur avec le deviceId existe déjà pour éviter les doublons
+                const newUserSnap = await getDoc(newUserRef);
+                if (!newUserSnap.exists()) {
+                    createPromises.push(setDoc(newUserRef, {
+                        ...data,
+                        dateInscription: data.dateInscription || new Date()
+                    }));
+                    console.log(`✅ Utilisateur recréé avec ID : ${deviceId}`);
+                } else {
+                    console.log(`ℹ️ L'utilisateur ${deviceId} existe déjà, pas de duplication.`);
+                }
+
+                // Supprimer l'ancien utilisateur avec IP dans l'ID
+                deletePromises.push(deleteDoc(doc(db, "users", userId)));
+            }
+        });
+
+        await Promise.all([...createPromises, ...deletePromises]);
+
+        alert("✅ Nettoyage terminé !");
+    } catch (error) {
+        console.error("Erreur lors du nettoyage :", error);
+        alert("❌ Une erreur est survenue pendant le nettoyage.");
+    }
+}
+
+// 📌 Rendre la fonction accessible globalement
+window.nettoyerUtilisateurs = nettoyerUtilisateurs;
+
