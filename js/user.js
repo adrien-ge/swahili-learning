@@ -55,7 +55,7 @@ async function chargerUtilisateur() {
     // 📌 Met à jour le nom dans le header de la page
     const nomElement = document.getElementById("nomUtilisateur");
     if (nomElement) {
-        nomElement.textContent = `Bienvenue, ${utilisateur.nom} !`;
+        nomElement.textContent = `Bienvenue ${utilisateur.nom} !`;
     } else {
         console.warn("⚠️ L'élément #nomUtilisateur est introuvable dans la page.");
     }
