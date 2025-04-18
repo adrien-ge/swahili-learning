@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Swahili Learning – Accueil</title>
+  <style>
+    /* 🌿 Thème Nature Swahili */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fefaf3;
+      color: #3e2f1c;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #4e7c47;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1em;
+    }
+
+    nav {
+      background-color: #7b4f2c;
+      color: white;
+      padding: 12px 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .card {
+      background-color: #fffdf7;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+      border-left: 8px solid #a7c957;
+    }
+
+    .btn {
+      background-color: #a7c957;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #6a994e;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #fffdf7;
+      font-size: 1em;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid #e0d9c3;
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #c2c5aa;
+      color: #3e2f1c;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f5f3eb;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="index.html">🏠 Accueil</a>
+      <a href="lesson/index.html">📚 Leçons</a>
+      <a href="quiz/index.html">🧠 Quiz</a>
+      <a href="admin/index.html">⚙️ Admin</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Bienvenue sur Swahili Learning</h1>
+    <p>Apprenez le swahili étape par étape, avec des leçons simples, des quiz interactifs et une progression personnalisée. 🌱</p>
+
+    <div class="card">
+      <h2>Commencer une leçon</h2>
+      <p>Découvrez les bases du swahili : pronoms, conjugaisons, vocabulaire et plus encore !</p>
+      <a href="lesson/index.html" class="btn">📘 Accéder aux leçons</a>
+    </div>
+
+    <div class="card">
+      <h2>Testez vos connaissances</h2>
+      <p>Mettez-vous au défi avec des quiz interactifs pour renforcer vos acquis et débloquer des récompenses !</p>
+      <a href="quiz/index.html" class="btn">🧪 Lancer un quiz</a>
+    </div>
+
+    <div class="card">
+      <h2>📘 Vocabulaire de base</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Swahili</th>
+            <th>Français</th>
+            <th>Exemple</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Asubuhi</td>
+            <td>Matin</td>
+            <td>Asubuhi njema – Bon matin</td>
+          </tr>
+          <tr>
+            <td>Chakula</td>
+            <td>Nourriture</td>
+            <td>Napenda chakula hiki – J’aime cette nourriture</td>
+          </tr>
+          <tr>
+            <td>Rafiki</td>
+            <td>Ami</td>
+            <td>Yeye ni rafiki yangu – C’est mon ami</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>
