@@ -14,6 +14,7 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
+    text-align: center; 
   }
   h1, h2, h3 {
     color: #4e7c47;
