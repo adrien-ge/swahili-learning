@@ -60,7 +60,7 @@ body {
   
   /* --- Boutons --- */
 
-  button.quiz-option {
+  button.quiz-options {
     font-size: 1.3em;      /* Agrandit le texte */
     padding: 14px 24px;    /* Agrandit l'espace intérieur */
     margin: 10px 0;        /* Espacement entre les boutons */
@@ -75,7 +75,7 @@ body {
     text-align: center;
   }
   
-  button.quiz-option:hover {
+  button.quiz-options:hover {
     background-color: #a7c957;
   }
   
