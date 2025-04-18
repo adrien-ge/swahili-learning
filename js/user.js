@@ -1,9 +1,9 @@
+
 // user.js
 
 import { db, auth } from "./firebase-config.js";
 import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
 
 // 📌 Fonction pour récupérer ou générer un `device_id`
 function obtenirDeviceID() {
@@ -28,8 +28,8 @@ signInAnonymously(auth)
 // 📌 Charger ou créer l'utilisateur dans Firestore
 async function chargerUtilisateur() {
     const deviceId = obtenirDeviceID();
-    await obtenirIP(); // Optionnellement tu peux utiliser l'IP si tu veux plus tard
-    const userId = `${deviceId}`; // Juste deviceId
+    await obtenirIP();
+    const userId = `${deviceId}`;
 
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
@@ -54,20 +54,31 @@ async function chargerUtilisateur() {
 
     // 📌 Met à jour le nom dans le header de la page
     const nomElement = document.getElementById("nomUtilisateur");
-    if (nomElement) {
+    if (nomElement && utilisateur.nom) {
         nomElement.textContent = `Bienvenue ${utilisateur.nom} !`;
-    } else {
-        console.warn("⚠️ L'élément #nomUtilisateur est introuvable dans la page.");
+    }
+
+    // 🎯 Masquer le formulaire si prénom déjà enregistré
+    const form = document.getElementById("formPrenom");
+    const modifierBtn = document.getElementById("modifierPrenomBtn");
+
+    if (form && modifierBtn) {
+        if (utilisateur.nom) {
+            form.style.display = "none";
+            modifierBtn.style.display = "inline-block";
+        } else {
+            form.style.display = "block";
+            modifierBtn.style.display = "none";
+        }
     }
 }
-
 
 // 📌 Fonction pour récupérer l'IP de l'utilisateur
 async function obtenirIP() {
     try {
         const response = await fetch("https://api64.ipify.org?format=json");
         const data = await response.json();
-        localStorage.setItem("last_ip", data.ip); // pour réutiliser plus tard
+        localStorage.setItem("last_ip", data.ip);
         return data.ip;
     } catch (error) {
         console.error("Erreur lors de la récupération de l'IP :", error);
@@ -88,9 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!prenom) return;
 
             const deviceId = localStorage.getItem("device_id");
-            const ip = localStorage.getItem("last_ip");
             const userId = deviceId || "Inconnue";
-
             const userRef = doc(db, "users", userId);
 
             try {
