@@ -50,7 +50,7 @@ function chargerNouveauMot() {
 
     reponses.forEach(rep => {
         const btn = document.createElement("button");
-        btn.className = "quiz-btn option-btn";
+        btn.className = "quiz-options";
         btn.textContent = modeInverse ? rep.swahili : rep.francais;
         btn.dataset.correct = rep.id === motActuel.id;
         btn.onclick = () => verifierReponse(rep.id === motActuel.id, btn);
