@@ -44,7 +44,7 @@ body {
     margin-right: 20px;
     font-weight: bold;
   }
-  
+
   a {
     text-decoration: none;
 }
@@ -76,8 +76,9 @@ body {
     text-align: center;
   }
   
-  button.quiz-options:hover {
-    background-color: #668816;
+  
+  button.quiz-options:active {
+    background-color: #45a049;
   }
   
   .btn, button {
