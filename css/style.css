@@ -56,7 +56,6 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     margin-bottom: 25px;
     border-left: 8px solid #a7c957;
-    text-align: center;
   }
   
   /* --- Boutons --- */
@@ -96,9 +95,20 @@ body {
   .btn:hover, button:hover {
     background-color: #6a994e;
   }
-
+  @keyframes bounce {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.15); }
+    50%  { transform: scale(0.95); }
+    70%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .quiz-btn.bounce {
+    animation: bounce 0.4s ease;
+  }
+  
   #swahiliWord {
-    font-size: 2em;          /* Taille du texte (peut augmenter à 2.5em si tu veux) */
+    font-size: 1.3em;          /* Taille du texte (peut augmenter à 2.5em si tu veux) */
     font-weight: bold;       /* Texte en gras */
     color: #2a4d14;          /* Vert foncé lisible (tu peux ajuster) */
     text-align: center;      /* Centré */

@@ -52,21 +52,29 @@ function chargerNouveauMot() {
 async function verifierReponse(index) {
     const boutons = document.querySelectorAll(".quiz-btn");
     const message = document.getElementById("message");
-
-    let correct = boutons[index].dataset.correct === "true";
-
+  
+    const boutonClique = boutons[index];
+    boutonClique.blur(); // évite le hover figé mobile
+  
+    let correct = boutonClique.dataset.correct === "true";
+  
     if (correct) {
-        message.textContent = "✅ Bonne réponse !";
-        message.style.color = "green";
-        setTimeout(() => {
-            message.textContent = "";
-            chargerNouveauMot();
-        }, 1000);
+      message.textContent = "✅ Bonne réponse !";
+      message.style.color = "green";
+  
+      // Ajoute l'effet bounce
+      boutonClique.classList.add("bounce");
+      setTimeout(() => {
+        boutonClique.classList.remove("bounce");
+        message.textContent = "";
+        chargerNouveauMot();
+      }, 1000);
     } else {
-        message.textContent = "❌ Mauvaise réponse, essayez encore.";
-        message.style.color = "red";
+      message.textContent = "❌ Mauvaise réponse, essayez encore.";
+      message.style.color = "red";
     }
-}
+  }
+  
 
 function basculerMode() {
     modeInverse = !modeInverse;
