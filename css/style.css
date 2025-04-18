@@ -76,11 +76,11 @@ body {
   }
   
   button.quiz-options:hover {
-    background-color: #a7c957;
+    background-color: #668816;
   }
   
   .btn, button {
-    background-color: #668816;
+    background-color: rgb(128, 151, 73);
 
     font-size: 1.3em;      /* Agrandit le texte */
     padding: 14px 24px;    /* Agrandit l'espace intérieur */
