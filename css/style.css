@@ -56,6 +56,25 @@ body {
   }
   
   /* --- Boutons --- */
+
+  button.option-btn {
+    font-size: 1.3em;      /* Agrandit le texte */
+    padding: 14px 24px;    /* Agrandit l'espace intérieur */
+    margin: 10px 0;        /* Espacement entre les boutons */
+    width: 100%;           /* Prend toute la largeur disponible */
+    max-width: 500px;      /* Largeur maximale */
+    border-radius: 10px;   /* Coins arrondis */
+    background-color: #a7c957;
+    color: white;
+    font-weight: bold;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.option-btn:hover {
+    background-color: #6a994e;
+  }
+  
   .btn, button {
     background-color: #a7c957;
     color: white;
