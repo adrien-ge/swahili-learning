@@ -48,10 +48,14 @@ function chargerNouveauMot() {
         btn.textContent = modeInverse ? reponses[index].swahili : reponses[index].francais;
         btn.dataset.correct = reponses[index].id === motActuel.id;
 
-        // Réinitialise styles et active les boutons
         btn.classList.remove("bounce");
         btn.disabled = false;
         btn.blur();
+
+        // 🔧 Forcer le redraw pour éviter effets visuels persistants (iOS/Chrome)
+        btn.style.display = 'none';
+        void btn.offsetHeight;
+        btn.style.display = '';
     });
 }
 
@@ -85,7 +89,7 @@ async function verifierReponse(index) {
         message.textContent = "❌ Mauvaise réponse, essayez encore.";
         message.style.color = "red";
 
-        boutonClique.disabled = true; // on bloque juste celui-ci
+        boutonClique.disabled = true;
     }
 }
 
