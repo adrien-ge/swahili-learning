@@ -26,6 +26,7 @@ function chargerNouveauMot() {
     motActuel = mots[Math.floor(Math.random() * mots.length)];
     const questionEl = document.getElementById("swahiliWord");
     const titleEl = document.getElementById("quizTitle");
+    const container = document.getElementById("optionsContainer");
 
     if (modeInverse) {
         questionEl.textContent = motActuel.francais;
@@ -37,48 +38,40 @@ function chargerNouveauMot() {
 
     let candidatsMauvaisesReponses = mots.filter(m => m.type === motActuel.type && m.id !== motActuel.id);
     if (candidatsMauvaisesReponses.length < 2) {
-        let autresMauvaisesReponses = mots.filter(m => m.id !== motActuel.id && !candidatsMauvaisesReponses.includes(m));
-        candidatsMauvaisesReponses = candidatsMauvaisesReponses.concat(autresMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2 - candidatsMauvaisesReponses.length));
+        let autres = mots.filter(m => m.id !== motActuel.id && !candidatsMauvaisesReponses.includes(m));
+        candidatsMauvaisesReponses = candidatsMauvaisesReponses.concat(autres.sort(() => 0.5 - Math.random()).slice(0, 2 - candidatsMauvaisesReponses.length));
     }
 
-    let mauvaisesReponses = candidatsMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2);
+    let mauvaises = candidatsMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2);
+    let reponses = [motActuel, ...mauvaises].sort(() => 0.5 - Math.random());
 
-    let reponses = [motActuel, ...mauvaisesReponses].sort(() => 0.5 - Math.random());
-    document.querySelectorAll(".quiz-btn").forEach((btn, index) => {
-        btn.textContent = modeInverse ? reponses[index].swahili : reponses[index].francais;
-        btn.dataset.correct = reponses[index].id === motActuel.id;
+    // 🔁 Supprime et recrée les boutons à chaque question (anti-hover iOS)
+    container.innerHTML = "";
 
-        btn.classList.remove("bounce");
-        btn.disabled = false;
-        btn.blur();
-
-        // 🔧 Forcer le redraw pour éviter effets visuels persistants (iOS/Chrome)
-        btn.style.display = 'none';
-        void btn.offsetHeight;
-        btn.style.display = '';
+    reponses.forEach(rep => {
+        const btn = document.createElement("button");
+        btn.className = "quiz-btn option-btn";
+        btn.textContent = modeInverse ? rep.swahili : rep.francais;
+        btn.dataset.correct = rep.id === motActuel.id;
+        btn.onclick = () => verifierReponse(rep.id === motActuel.id, btn);
+        container.appendChild(btn);
     });
 }
 
-async function verifierReponse(index) {
-    const boutons = document.querySelectorAll(".quiz-btn");
+function verifierReponse(correct, boutonClique) {
     const message = document.getElementById("message");
-    const boutonClique = boutons[index];
 
-    // 🔧 iPhone fix : forcer redraw
+    // 🔧 iPhone fix : force redraw
     boutonClique.blur();
     boutonClique.style.display = 'none';
     void boutonClique.offsetHeight;
     boutonClique.style.display = '';
-
-    const correct = boutonClique.dataset.correct === "true";
 
     if (correct) {
         message.textContent = "✅ Bonne réponse !";
         message.style.color = "green";
 
         boutonClique.classList.add("bounce");
-
-        boutons.forEach(btn => btn.disabled = true);
 
         setTimeout(() => {
             boutonClique.classList.remove("bounce");
@@ -104,4 +97,3 @@ document.getElementById("toggleModeBtn")?.addEventListener("click", basculerMode
 
 // 📌 Initialisation
 chargerMots();
-window.verifierReponse = verifierReponse;
