@@ -18,6 +18,8 @@ body {
   h1, h2, h3 {
     color: #4e7c47;
     margin-bottom: 10px;
+    text-align: center;
+
   }
   p {
     font-size: 1.1em;
