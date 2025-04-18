@@ -80,17 +80,20 @@ body {
   }
   
   .btn, button {
-    background-color: #a7c957;
+    background-color: #5777c9;
+
+    font-size: 1.3em;      /* Agrandit le texte */
+    padding: 14px 24px;    /* Agrandit l'espace intérieur */
+    margin: 10px 0;        /* Espacement entre les boutons */
+    width: 100%;           /* Prend toute la largeur disponible */
+    max-width: 500px;      /* Largeur maximale */
+    border-radius: 10px;   /* Coins arrondis */
+
     color: white;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 6px;
     font-weight: bold;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 10px;
-    cursor: pointer;
+    border: none;
     transition: background-color 0.3s ease;
+    text-align: center;
   }
   .btn:hover, button:hover {
     background-color: #6a994e;
