@@ -95,6 +95,14 @@ body {
   .btn:hover, button:hover {
     background-color: #6a994e;
   }
+
+  #swahiliWord {
+    font-size: 2em;          /* Taille du texte (peut augmenter à 2.5em si tu veux) */
+    font-weight: bold;       /* Texte en gras */
+    color: #2a4d14;          /* Vert foncé lisible (tu peux ajuster) */
+    text-align: center;      /* Centré */
+    margin: 20px 0;          /* Espace au-dessus et en dessous */
+  }
   
   /* --- Tableaux --- */
   table {
