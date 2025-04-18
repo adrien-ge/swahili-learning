@@ -1,114 +1,182 @@
-/* 🌿 Thème Nature Swahili – style.css */
-
+/* 🌍 Styles généraux */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #fefaf3;
-  color: #3e2f1c;
-  line-height: 1.6;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
 }
 
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
+/* 📌 Header */
+header {
+    background: #009688;
+    color: white;
+    padding: 15px;
+    font-size: 1.2em;
 }
 
-h1, h2, h3 {
-  color: #4e7c47;
-  margin-bottom: 10px;
-}
-
-p {
-  font-size: 1.1em;
-}
-
-/* Navigation */
 nav {
-  background-color: #7b4f2c;
-  color: white;
-  padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
 }
 
 nav a {
-  color: white;
-  text-decoration: none;
-  margin-right: 20px;
-  font-weight: bold;
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    transition: background 0.3s ease;
 }
 
 nav a:hover {
-  text-decoration: underline;
+    background: rgba(255, 255, 255, 0.4);
 }
 
-/* Cartes */
-.card {
-  background-color: #fffdf7;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 25px;
-  border-left: 8px solid #a7c957;
+/* 📌 Contenu principal */
+main {
+    padding: 30px;
+    max-width: 1000px;
+    margin: auto;
 }
 
-/* Boutons */
+h2 {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* 📌 Bouton principal */
 .btn {
-  background-color: #a7c957;
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    color: white;
+    background: #ff9800;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: background 0.3s ease;
 }
 
 .btn:hover {
-  background-color: #6a994e;
+    background: #e68900;
 }
 
-/* Tableaux */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  background-color: #fffdf7;
-  font-size: 1em;
-  border-radius: 8px;
-  overflow: hidden;
+button.btn {
+    border: none; /* ✅ supprime la ligne noire */
+    cursor: pointer;
+    background: #ff9800;
+    border-radius: 5px;
+    transition: background 0.3s ease;
 }
 
-th, td {
-  border: 1px solid #e0d9c3;
-  padding: 12px 16px;
-  text-align: left;
+button.btn:hover {
+    background: #e68900;
 }
 
-th {
-  background-color: #c2c5aa;
-  color: #3e2f1c;
-  font-weight: bold;
+
+/* 📌 Quiz - Boutons */
+.quiz-btn {
+    display: inline-block;
+    width: 40%;
+    margin: 10px;
+    padding: 12px;
+    font-size: 1em;
+    color: white;
+    background: #2196F3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-tr:nth-child(even) {
-  background-color: #f5f3eb;
+.quiz-btn:hover {
+    background: #1976D2;
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-  .container {
-    padding: 10px;
-  }
+/* 📌 Zone de progression */
+#score, #niveau, #badges {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
 
-  nav {
-    text-align: center;
-  }
+/* 📌 Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 12px;
+    font-size: 0.9em;
+    margin-top: 30px;
+}
 
-  nav a {
-    display: block;
-    margin: 10px 0;
-  }
+/* 🌍 Adaptation pour grands écrans */
+@media (min-width: 1024px) {
+    nav {
+        gap: 20px;
+    }
+    nav a {
+        font-size: 1.1em;
+        padding: 12px 18px;
+    }
+    
+    .quiz-btn {
+        width: 35%;
+    }
+}
+
+/* 🌍 Adaptation pour tablettes */
+@media (max-width: 1024px) {
+    nav {
+        gap: 12px;
+    }
+    .quiz-btn {
+        width: 50%;
+    }
+}
+
+/* 🌍 Adaptation pour mobiles */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+    nav a {
+        display: block;
+        margin-bottom: 5px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .btn, .quiz-btn {
+        width: 90%;
+    }
+}
+
+/* ✨ Mise en valeur du nom utilisateur */
+.user-welcome {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #009688;
+    background: #e0f2f1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container input,
+.form-container button {
+    padding: 12px;
+    font-size: 1.1em;
+    border-radius: 5px;
 }
