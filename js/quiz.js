@@ -1,3 +1,4 @@
+
 import { db } from "../js/firebase-config.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -46,35 +47,46 @@ function chargerNouveauMot() {
     document.querySelectorAll(".quiz-btn").forEach((btn, index) => {
         btn.textContent = modeInverse ? reponses[index].swahili : reponses[index].francais;
         btn.dataset.correct = reponses[index].id === motActuel.id;
+
+        // Réinitialise styles et active les boutons
+        btn.classList.remove("bounce");
+        btn.disabled = false;
+        btn.blur();
     });
 }
 
 async function verifierReponse(index) {
     const boutons = document.querySelectorAll(".quiz-btn");
     const message = document.getElementById("message");
-  
+
     const boutonClique = boutons[index];
-    boutonClique.blur(); // évite le hover figé mobile
-  
+    boutonClique.blur();
+
     let correct = boutonClique.dataset.correct === "true";
-  
+
+    // Supprime tous les styles de hover/focus bloqués et désactive les autres boutons
+    boutons.forEach(btn => {
+        btn.blur();
+        btn.disabled = true;
+    });
+
     if (correct) {
-      message.textContent = "✅ Bonne réponse !";
-      message.style.color = "green";
-  
-      // Ajoute l'effet bounce
-      boutonClique.classList.add("bounce");
-      setTimeout(() => {
-        boutonClique.classList.remove("bounce");
-        message.textContent = "";
-        chargerNouveauMot();
-      }, 1000);
+        message.textContent = "✅ Bonne réponse !";
+        message.style.color = "green";
+
+        // Ajoute l'effet bounce
+        boutonClique.classList.add("bounce");
+
+        setTimeout(() => {
+            boutonClique.classList.remove("bounce");
+            message.textContent = "";
+            chargerNouveauMot();
+        }, 1000);
     } else {
-      message.textContent = "❌ Mauvaise réponse, essayez encore.";
-      message.style.color = "red";
+        message.textContent = "❌ Mauvaise réponse, essayez encore.";
+        message.style.color = "red";
     }
-  }
-  
+}
 
 function basculerMode() {
     modeInverse = !modeInverse;
