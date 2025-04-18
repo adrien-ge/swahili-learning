@@ -9,22 +9,10 @@ import { signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/fir
 function obtenirDeviceID() {
     let deviceId = localStorage.getItem("device_id");
     if (!deviceId) {
-        deviceId = crypto.randomUUID();
+        deviceId = crypto.randomUUID(); // Génère un identifiant unique
         localStorage.setItem("device_id", deviceId);
     }
     return deviceId;
-}
-
-// 📌 Fonction pour obtenir l’adresse IP
-async function obtenirIP() {
-    try {
-        const response = await fetch("https://api.ipify.org?format=json");
-        const data = await response.json();
-        return data.ip;
-    } catch (error) {
-        console.error("Erreur lors de l'obtention de l'IP :", error);
-        return "inconnue";
-    }
 }
 
 // 📌 Connexion anonyme à Firebase
@@ -40,64 +28,90 @@ signInAnonymously(auth)
 // 📌 Charger ou créer l'utilisateur dans Firestore
 async function chargerUtilisateur() {
     const deviceId = obtenirDeviceID();
-    const ip = await obtenirIP();
-    const ref = doc(db, "utilisateurs", `${deviceId}_${ip}`);
-    const docSnap = await getDoc(ref);
+    await obtenirIP(); // Optionnellement tu peux utiliser l'IP si tu veux plus tard
+    const userId = `${deviceId}`; // Juste deviceId
 
-    let utilisateur = {};
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+
+    let utilisateur;
 
     if (docSnap.exists()) {
         utilisateur = docSnap.data();
-        console.log("👤 Utilisateur trouvé :", utilisateur);
-
-        // Affiche le prénom dans les balises avec .prenom
-        document.querySelectorAll(".prenom").forEach(el => {
-            el.textContent = utilisateur.nom || "";
-        });
-
+        console.log("✅ Utilisateur existant chargé :", utilisateur);
     } else {
-        console.log("👤 Nouvel utilisateur, création...");
-        await setDoc(ref, { nom: "" });
+        utilisateur = {
+            nom: "",
+            device_id: deviceId,
+            leçon: "Aucune",
+            score: 0,
+            dateInscription: new Date()
+        };
+
+        await setDoc(docRef, utilisateur);
+        console.log("👤 Nouvel utilisateur enregistré :", utilisateur);
     }
 
-    // 🎯 Affiche ou masque le formulaire selon que le prénom existe
-    const form = document.getElementById("formPrenom");
-    const modifierBtn = document.getElementById("modifierPrenomBtn");
-
-    if (utilisateur.nom && form && modifierBtn) {
-        form.style.display = "none";         // Masque le formulaire
-        modifierBtn.style.display = "block"; // Affiche le bouton de modification
-    } else if (form && modifierBtn) {
-        form.style.display = "block";        // Affiche le formulaire
-        modifierBtn.style.display = "none";  // Cache le bouton
+    // 📌 Met à jour le nom dans le header de la page
+    const nomElement = document.getElementById("nomUtilisateur");
+    if (nomElement) {
+        nomElement.textContent = `Bienvenue ${utilisateur.nom} !`;
+    } else {
+        console.warn("⚠️ L'élément #nomUtilisateur est introuvable dans la page.");
     }
 }
 
-// 📌 Mise à jour du prénom
-document.getElementById("formPrenom")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const prenom = document.getElementById("prenom").value.trim();
-    if (!prenom) return;
 
-    const deviceId = obtenirDeviceID();
-    const ip = await obtenirIP();
-    const ref = doc(db, "utilisateurs", `${deviceId}_${ip}`);
+// 📌 Fonction pour récupérer l'IP de l'utilisateur
+async function obtenirIP() {
+    try {
+        const response = await fetch("https://api64.ipify.org?format=json");
+        const data = await response.json();
+        localStorage.setItem("last_ip", data.ip); // pour réutiliser plus tard
+        return data.ip;
+    } catch (error) {
+        console.error("Erreur lors de la récupération de l'IP :", error);
+        return "Inconnue";
+    }
+}
 
-    await updateDoc(ref, { nom: prenom });
-    document.querySelectorAll(".prenom").forEach(el => {
-        el.textContent = prenom;
-    });
+// 📌 Gestion du formulaire prénom
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("formPrenom");
+    const input = document.getElementById("inputPrenom");
+    const modifierBtn = document.getElementById("modifierPrenomBtn");
 
-    // Met à jour l'affichage
-    document.getElementById("formPrenom").style.display = "none";
-    document.getElementById("modifierPrenomBtn").style.display = "block";
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const prenom = input.value.trim();
+            if (!prenom) return;
+
+            const deviceId = localStorage.getItem("device_id");
+            const ip = localStorage.getItem("last_ip");
+            const userId = deviceId || "Inconnue";
+
+            const userRef = doc(db, "users", userId);
+
+            try {
+                await updateDoc(userRef, { nom: prenom });
+                document.getElementById("nomUtilisateur").textContent = `Bienvenue, ${prenom} !`;
+                input.value = "";
+                form.style.display = "none";
+                if (modifierBtn) modifierBtn.style.display = "inline-block";
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour du prénom :", error);
+            }
+        });
+    }
+
+    // 📌 Réafficher le formulaire si on clique sur le bouton "Modifier"
+    if (modifierBtn) {
+        modifierBtn.addEventListener("click", () => {
+            form.style.display = "block";
+            modifierBtn.style.display = "none";
+        });
+    }
 });
-
-// 📌 Afficher à nouveau le formulaire quand on clique sur "Modifier le prénom"
-document.getElementById("modifierPrenomBtn")?.addEventListener("click", () => {
-    document.getElementById("formPrenom").style.display = "block";
-    document.getElementById("modifierPrenomBtn").style.display = "none";
-});
-
 
 export { chargerUtilisateur };
