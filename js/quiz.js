@@ -60,11 +60,16 @@ async function verifierReponse(index) {
     const message = document.getElementById("message");
 
     const boutonClique = boutons[index];
+
+    // 🔧 Correctif spécial iPhone : forcer un redraw après blur
     boutonClique.blur();
+    boutonClique.style.display = 'none';
+    void boutonClique.offsetHeight;
+    boutonClique.style.display = '';
 
     let correct = boutonClique.dataset.correct === "true";
 
-    // Supprime tous les styles de hover/focus bloqués et désactive les autres boutons
+    // Désactiver tous les boutons
     boutons.forEach(btn => {
         btn.blur();
         btn.disabled = true;
@@ -74,7 +79,6 @@ async function verifierReponse(index) {
         message.textContent = "✅ Bonne réponse !";
         message.style.color = "green";
 
-        // Ajoute l'effet bounce
         boutonClique.classList.add("bounce");
 
         setTimeout(() => {

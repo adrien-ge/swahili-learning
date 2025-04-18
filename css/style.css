@@ -173,4 +173,11 @@ body {
       margin: 10px 0;
     }
   }
+
+  @media (hover: none) {
+    .quiz-btn:hover {
+      background-color: inherit !important;
+    }
+  }
+  
   
