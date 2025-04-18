@@ -37,10 +37,10 @@ function chargerNouveauMot() {
 
     if (modeInverse) {
         questionEl.textContent = motActuel.francais;
-        if (titleEl) titleEl.textContent = "Quel est le mot en Swahili ?";
+        if (titleEl) titleEl.textContent = "Quel est le mot Swahili ?";
     } else {
         questionEl.textContent = motActuel.swahili;
-        if (titleEl) titleEl.textContent = "Quel est le mot en Francais ?";
+        if (titleEl) titleEl.textContent = "Quel est le mot Francais ?";
     }
 
     let candidatsMauvaisesReponses = mots.filter(m => m.type === motActuel.type && m.id !== motActuel.id);
