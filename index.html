@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apprendre le Swahili</title>
     <link rel="stylesheet" href="../css/style.css">
-    <!-- <link rel="stylesheet" href="../css/table.css">-->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
     <header>
-
         <nav>
             <div class="container"><p id="nomUtilisateur" class="user-welcome">Chargement...</p></div>
         </nav>
@@ -22,13 +20,6 @@
               <a href="pages/admin.html">⚙️ Admin</a>
             </div>
           </nav>
-
-                
-        <h1>Bienvenue sur le site d'apprentissage du Swahili</h1>
-        <div><a href="pages/quiz.html" class="btn">Commencer un Quiz</a></div>
-        <div><a href="pages/gestionMots.html" class="btn">Modifier les mots</a></div>
-
-        <!-- <div><a href="pages/admin.html" class="btn">Admin</a></div> -->
     </header>
 
     <div class="container">
@@ -48,33 +39,22 @@
         <div class="card">
           <h2>Commencer une leçon</h2>
           <p>Découvrez les bases du swahili : pronoms, conjugaisons, vocabulaire et plus encore !</p>
-          <a href="lesson/index.html" class="btn">📘 Accéder aux leçons</a>
+          <a href="pages/lecons.html" class="btn">📘 Accéder aux leçons</a>
         </div>
 
-    <div class="card">                 
-        <!-- Formulaire pour le prénom -->
-        <form id="formPrenom" class="form-container" style="margin-top: 10px;">
-            <input type="text" id="inputPrenom" placeholder="Ton prénom" required>
-            <button type="submit" class="btn">Enregistrer</button>
-        </form>
-        
-        <!-- Bouton "modifier" stylisé comme les autres -->
-        <button id="modifierPrenomBtn" class="btn" style="display: none;">
-            Modifier mon prénom
-        </button>
+        <div class="card">                 
+            <!-- Formulaire pour le prénom -->
+            <form id="formPrenom" class="form-container" style="margin-top: 10px;">
+                <input type="text" id="inputPrenom" placeholder="Ton prénom" required>
+                <button type="submit" class="btn">Enregistrer</button>
+            </form>
+            
+            <!-- Bouton "modifier" stylisé comme les autres -->
+            <button id="modifierPrenomBtn" class="btn" style="display: none;">
+                Modifier mon prénom
+            </button>
+        </div>
     </div>
-
-
-
-    <main>
-        <h2>Introduction au Swahili</h2>
-        <div><a href="pages/Temps.html" class="btn">Les Temps et les pronoms</a></div>
-        <div><a href="pages/Stove.html" class="btn">STOVE</a></div>
-        <div><a href="pages/Negation.html" class="btn">La négation</a></div>
-        <div><a href="pages/Particules.html" class="btn">Particules clés</a></div>
-        <!-- <div><a href="pages/quizz-audio.html" class="btn">Commencer un Quiz audio</a></div> -->
-    </main>
-
     <footer>
         <p>&copy; 2025 Apprendre le Swahili</p>
     </footer>
