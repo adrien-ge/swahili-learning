@@ -4,12 +4,11 @@ import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/f
 
 let mots = [];
 let motActuel = {};
-let modeInverse = false;
+let modeInverse = false; // false = Swahili -> Français, true = Français -> Swahili
 
-// 📌 Fonction pour récupérer les mots en Swahili depuis Firebase (avec cache localStorage)
+// 📌 Fonction pour récupérer les mots avec cache localStorage
 async function chargerMots() {
     const cache = localStorage.getItem("motsSwahili");
-
     if (cache) {
         mots = JSON.parse(cache);
         return chargerNouveauMot();
@@ -53,6 +52,7 @@ function chargerNouveauMot() {
     let mauvaises = candidatsMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2);
     let reponses = [motActuel, ...mauvaises].sort(() => 0.5 - Math.random());
 
+    // 🔁 Supprime et recrée les boutons à chaque question (anti-hover iOS)
     container.innerHTML = "";
 
     reponses.forEach(rep => {
@@ -68,6 +68,7 @@ function chargerNouveauMot() {
 function verifierReponse(correct, boutonClique) {
     const message = document.getElementById("message");
 
+    // 🔧 iPhone fix : force redraw
     boutonClique.blur();
     boutonClique.style.display = 'none';
     void boutonClique.offsetHeight;
