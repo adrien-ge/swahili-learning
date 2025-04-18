@@ -58,28 +58,23 @@ function chargerNouveauMot() {
 async function verifierReponse(index) {
     const boutons = document.querySelectorAll(".quiz-btn");
     const message = document.getElementById("message");
-
     const boutonClique = boutons[index];
 
-    // 🔧 Correctif spécial iPhone : forcer un redraw après blur
+    // 🔧 iPhone fix : forcer redraw
     boutonClique.blur();
     boutonClique.style.display = 'none';
     void boutonClique.offsetHeight;
     boutonClique.style.display = '';
 
-    let correct = boutonClique.dataset.correct === "true";
-
-    // Désactiver tous les boutons
-    boutons.forEach(btn => {
-        btn.blur();
-        btn.disabled = true;
-    });
+    const correct = boutonClique.dataset.correct === "true";
 
     if (correct) {
         message.textContent = "✅ Bonne réponse !";
         message.style.color = "green";
 
         boutonClique.classList.add("bounce");
+
+        boutons.forEach(btn => btn.disabled = true);
 
         setTimeout(() => {
             boutonClique.classList.remove("bounce");
@@ -89,6 +84,8 @@ async function verifierReponse(index) {
     } else {
         message.textContent = "❌ Mauvaise réponse, essayez encore.";
         message.style.color = "red";
+
+        boutonClique.disabled = true; // on bloque juste celui-ci
     }
 }
 
