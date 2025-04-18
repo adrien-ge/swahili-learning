@@ -44,9 +44,6 @@ body {
     margin-right: 20px;
     font-weight: bold;
   }
-  nav a:hover {
-    text-decoration: underline;
-  }
   
   /* --- Cartes / blocs --- */
   .card {
