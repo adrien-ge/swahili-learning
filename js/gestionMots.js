@@ -38,7 +38,7 @@ async function chargerMots() {
     }
 }
 
-async function ajouterMot() {
+async function ajouterMot2() {
   let swahili = document.getElementById("swahiliInput").value.trim().toLowerCase();
   let francais = document.getElementById("francaisInput").value.trim();
   let etape = document.getElementById("etapeInput").value;
@@ -81,7 +81,7 @@ async function ajouterMot() {
   }
 }
 
-async function ajouterMot2() {
+async function ajouterMot() {
     let swahili = document.getElementById("swahiliInput").value;
     let francais = document.getElementById("francaisInput").value;
     let etape = document.getElementById("etapeInput").value;
