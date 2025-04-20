@@ -1,3 +1,4 @@
+// ✅ quiz.js (avec cache intelligent sur 10 minutes)
 
 import { db } from "../js/firebase-config.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -6,10 +7,14 @@ let mots = [];
 let motActuel = {};
 let modeInverse = false; // false = Swahili -> Français, true = Français -> Swahili
 
-// 📌 Fonction pour récupérer les mots avec cache localStorage
+// 📌 Fonction pour récupérer les mots avec cache intelligent (10 min)
 async function chargerMots() {
     const cache = localStorage.getItem("motsSwahili");
-    if (cache) {
+    const cacheTime = localStorage.getItem("motsSwahili_time");
+    const maintenant = Date.now();
+    const delai = 10 * 60 * 1000; // 10 minutes
+
+    if (cache && cacheTime && maintenant - parseInt(cacheTime) < delai) {
         mots = JSON.parse(cache);
         return chargerNouveauMot();
     }
@@ -18,6 +23,7 @@ async function chargerMots() {
         const motsSnapshot = await getDocs(collection(db, "mots_swahili"));
         mots = motsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         localStorage.setItem("motsSwahili", JSON.stringify(mots));
+        localStorage.setItem("motsSwahili_time", maintenant.toString());
         chargerNouveauMot();
     } catch (error) {
         console.error("Erreur lors du chargement des mots :", error);
@@ -52,7 +58,6 @@ function chargerNouveauMot() {
     let mauvaises = candidatsMauvaisesReponses.sort(() => 0.5 - Math.random()).slice(0, 2);
     let reponses = [motActuel, ...mauvaises].sort(() => 0.5 - Math.random());
 
-    // 🔁 Supprime et recrée les boutons à chaque question (anti-hover iOS)
     container.innerHTML = "";
 
     reponses.forEach(rep => {
@@ -68,7 +73,6 @@ function chargerNouveauMot() {
 function verifierReponse(correct, boutonClique) {
     const message = document.getElementById("message");
 
-    // 🔧 iPhone fix : force redraw
     boutonClique.blur();
     boutonClique.style.display = 'none';
     void boutonClique.offsetHeight;
@@ -79,7 +83,6 @@ function verifierReponse(correct, boutonClique) {
         message.style.color = "green";
 
         boutonClique.classList.add("bounce");
-
         setTimeout(() => {
             boutonClique.classList.remove("bounce");
             message.textContent = "";
@@ -88,7 +91,6 @@ function verifierReponse(correct, boutonClique) {
     } else {
         message.textContent = "❌ Mauvaise réponse, essayez encore.";
         message.style.color = "red";
-
         boutonClique.disabled = true;
     }
 }
@@ -103,4 +105,4 @@ function basculerMode() {
 document.getElementById("toggleModeBtn")?.addEventListener("click", basculerMode);
 
 // 📌 Initialisation
-chargerMots();
+document.addEventListener("DOMContentLoaded", chargerMots);
