@@ -79,6 +79,9 @@
 
       total++;
     }
+    
+    window.mettreMajusculeSwahiliEtFrancais = mettreMajusculeSwahiliEtFrancais;
+
 
     status.innerText = `✔️ ${maj} mots mis à jour sur ${total}`;
   } catch (err) {
@@ -104,6 +107,6 @@
   <p>Cette opération ajoutera le champ <code>swahiliNormalise</code> à tous les mots qui n'en ont pas déjà.</p>
   <button onclick="mettreMajusculeSwahiliEtFrancais()">🔠 Mettre une majuscule à Swahili + Français</button>
   <div id="status"></div>
-  
+
 </body>
 </html>
