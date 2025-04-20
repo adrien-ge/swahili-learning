@@ -1,6 +1,7 @@
 import { db } from "../js/firebase-config.js";
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+let tousLesMots = []; // Liste globale pour filtrer sans recharger Firebase
 // Chargement initial des mots
 async function chargerMots() {
     let container = document.getElementById("wordsTableBody");
