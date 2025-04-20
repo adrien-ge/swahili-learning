@@ -48,6 +48,45 @@
     }
 
     window.normaliserTousLesMotsExistants = normaliserTousLesMotsExistants;
+
+    async function mettreMajusculeSwahiliEtFrancais() {
+  const status = document.getElementById("status");
+  status.innerText = "🔄 Mise en majuscule des champs swahili et français...";
+  let total = 0;
+  let maj = 0;
+
+  try {
+    const motsRef = collection(db, "mots_swahili");
+    const snapshot = await getDocs(motsRef);
+
+    for (const docSnap of snapshot.docs) {
+      const data = docSnap.data();
+      const ancienSw = data.swahili || "";
+      const ancienFr = data.francais || "";
+
+      const swMaj = ancienSw.charAt(0).toUpperCase() + ancienSw.slice(1).toLowerCase();
+      const frMaj = ancienFr.charAt(0).toUpperCase() + ancienFr.slice(1).toLowerCase();
+
+      // Appliquer uniquement si changement détecté
+      if (ancienSw !== swMaj || ancienFr !== frMaj) {
+        await updateDoc(doc(db, "mots_swahili", docSnap.id), {
+          swahili: swMaj,
+          francais: frMaj
+        });
+        console.log(`🔤 ${ancienSw} → ${swMaj} | ${ancienFr} → ${frMaj}`);
+        maj++;
+      }
+
+      total++;
+    }
+
+    status.innerText = `✔️ ${maj} mots mis à jour sur ${total}`;
+  } catch (err) {
+    console.error("Erreur :", err);
+    status.innerText = "❌ Erreur pendant la mise à jour";
+  }
+}
+
   </script>
   <style>
     body { font-family: sans-serif; padding: 2rem; text-align: center; }
@@ -60,5 +99,11 @@
   <p>Cette opération ajoutera le champ <code>swahiliNormalise</code> à tous les mots qui n'en ont pas déjà.</p>
   <button onclick="normaliserTousLesMotsExistants()">Lancer la normalisation</button>
   <div id="status"></div>
+
+  <h1>⚙️ Normalisation des mots Swahili</h1>
+  <p>Cette opération ajoutera le champ <code>swahiliNormalise</code> à tous les mots qui n'en ont pas déjà.</p>
+  <button onclick="mettreMajusculeSwahiliEtFrancais()">🔠 Mettre une majuscule à Swahili + Français</button>
+  <div id="status"></div>
+  
 </body>
 </html>
