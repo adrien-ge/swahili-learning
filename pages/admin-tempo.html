@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Normaliser les mots Swahili</title>
+  <script type="module">
+    import { db } from "../js/firebase-config.js";
+
+    function normaliserTexte(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    async function normaliserTousLesMotsExistants() {
+      const status = document.getElementById("status");
+      status.innerText = "🔄 Normalisation en cours...";
+      let total = 0;
+      let maj = 0;
+
+      try {
+        const motsRef = collection(db, "mots_swahili");
+        const snapshot = await getDocs(motsRef);
+
+        for (const docSnap of snapshot.docs) {
+          const data = docSnap.data();
+          if (!data.swahiliNormalise) {
+            const normalise = normaliserTexte(data.swahili || "");
+            await updateDoc(doc(db, "mots_swahili", docSnap.id), {
+              swahiliNormalise: normalise
+            });
+            console.log(`✅ ${data.swahili} → ${normalise}`);
+            maj++;
+          }
+          total++;
+        }
+
+        status.innerText = `✔️ ${maj} mots normalisés sur ${total}`;
+      } catch (err) {
+        console.error("Erreur :", err);
+        status.innerText = "❌ Erreur pendant la normalisation";
+      }
+    }
+
+    window.normaliserTousLesMotsExistants = normaliserTousLesMotsExistants;
+  </script>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; text-align: center; }
+    button { font-size: 1.2rem; padding: 1rem 2rem; margin-top: 2rem; }
+    #status { margin-top: 2rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>⚙️ Normalisation des mots Swahili</h1>
+  <p>Cette opération ajoutera le champ <code>swahiliNormalise</code> à tous les mots qui n'en ont pas déjà.</p>
+  <button onclick="normaliserTousLesMotsExistants()">Lancer la normalisation</button>
+  <div id="status"></div>
+</body>
+</html>
