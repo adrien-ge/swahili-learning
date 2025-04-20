@@ -1,6 +1,7 @@
 import { db } from "../js/firebase-config.js";
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// Chargement initial des mots
 async function chargerMots() {
     let container = document.getElementById("wordsTableBody");
     container.innerHTML = "";  // Nettoyer l'affichage avant de charger
@@ -8,35 +9,61 @@ async function chargerMots() {
     try {
         const motsQuery = query(collection(db, "mots_swahili"), orderBy("dateEnregistrement", "desc"));
         const querySnapshot = await getDocs(motsQuery);
-        let mots = [];
-        querySnapshot.forEach(doc => {
-            mots.push({ id: doc.id, ...doc.data() });
-        });
+        
+        tousLesMots = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        afficherMots(tousLesMots);
 
-        mots.forEach(mot => {
-            let card = document.createElement("div");
-            card.classList.add("table-card");
-            card.innerHTML = `
-                <div class="row">
-                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'swahili', this.textContent)">${mot.swahili}</span>
-                    <span contenteditable="true" onblur="modifierMot('${mot.id}', 'francais', this.textContent)">${mot.francais}</span>
-                </div>
-                <div class="row">
-                    <input type="number" value="${mot.etape || 0}" onchange="modifierMot('${mot.id}', 'etape', this.value)">
-                    <select onchange="modifierMot('${mot.id}', 'type', this.value)">
-                        ${obtenirOptionsType(mot.type)}
-                    </select>
-                </div>
-                <div class="actions">
-                    <button onclick="supprimerMot('${mot.id}')">🗑 Supprimer</button>
-                </div>
-            `;
-            container.appendChild(card);
-        });
     } catch (error) {
         console.error("Erreur lors du chargement des mots:", error);
     }
 }
+
+// Affichage dynamique des mots (filtrés ou complets)
+function afficherMots(mots) {
+    let container = document.getElementById("wordsTableBody");
+    container.innerHTML = "";
+
+    mots.forEach(mot => {
+        let card = document.createElement("div");
+        card.classList.add("table-card");
+        card.innerHTML = `
+            <div class="row">
+                <span contenteditable="true" onblur="modifierMot('${mot.id}', 'swahili', this.textContent)">${mot.swahili}</span>
+                <span contenteditable="true" onblur="modifierMot('${mot.id}', 'francais', this.textContent)">${mot.francais}</span>
+            </div>
+            <div class="row">
+                <input type="number" value="${mot.etape || 0}" onchange="modifierMot('${mot.id}', 'etape', this.value)">
+                <select onchange="modifierMot('${mot.id}', 'type', this.value)">
+                    ${obtenirOptionsType(mot.type)}
+                </select>
+            </div>
+            <div class="actions">
+                <button onclick="supprimerMot('${mot.id}')">🗑 Supprimer</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Filtrage en direct dès la saisie
+function filtrerMots() {
+    const filtre = document.getElementById("swahiliInput").value.trim().toLowerCase();
+    const motsFiltres = tousLesMots.filter(m =>
+        m.swahili.toLowerCase().includes(filtre)
+    );
+    afficherMots(motsFiltres);
+}
+
+// Activer l'écouteur dès que la page est prête
+document.addEventListener("DOMContentLoaded", () => {
+    const champFiltre = document.getElementById("swahiliInput");
+    if (champFiltre) {
+        champFiltre.addEventListener("input", filtrerMots);
+    }
+});
+
+// ✅ FIN MODIFICATION — 2025-04-19
+
 // 🔤 Fonction de normalisation : minuscule + suppression d'accents
 function normaliserTexte(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
