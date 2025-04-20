@@ -1,5 +1,5 @@
 import { db } from "../js/firebase-config.js";
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 async function chargerMots() {
     let container = document.getElementById("wordsTableBody");
@@ -37,51 +37,48 @@ async function chargerMots() {
         console.error("Erreur lors du chargement des mots:", error);
     }
 }
-
-async function ajouterMot2() {
-  let swahili = document.getElementById("swahiliInput").value.trim().toLowerCase();
-  let francais = document.getElementById("francaisInput").value.trim();
-  let etape = document.getElementById("etapeInput").value;
-  let type = document.getElementById("typeInput").value;
-
-  if (!swahili || !francais) {
-    alert("Veuillez remplir au moins le mot en swahili et sa traduction en français.");
-    return;
-  }
-
-  try {
-    // 🔁 MODIFICATION CHATGPT — VÉRIFICATION DOUBLONS — 2025-04-19
-    const motsRef = collection(db, "mots_swahili");
-    const q = query(motsRef, where("swahili", "==", swahili));
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      alert("Ce mot existe déjà dans la base de données.");
+async function ajouterMot() {
+    let swahili = document.getElementById("swahiliInput").value.trim().toLowerCase();
+    let francais = document.getElementById("francaisInput").value.trim();
+    let etape = document.getElementById("etapeInput").value;
+    let type = document.getElementById("typeInput").value;
+  
+    if (!swahili || !francais) {
+      alert("Veuillez remplir au moins le mot en swahili et sa traduction en français.");
       return;
     }
-
-    await addDoc(motsRef, {
-      swahili,
-      francais,
-      etape: etape || "",
-      type: type || "",
-      dateEnregistrement: Timestamp.now()
-    });
-    // 🔁 FIN MODIFICATION CHATGPT — VÉRIFICATION DOUBLONS — 2025-04-19
-
-    chargerMots();
-
+  
+    try {
+      const motsRef = collection(db, "mots_swahili");
+      const q = query(motsRef, where("swahili", "==", swahili));
+      const snapshot = await getDocs(q);
+  
+      if (!snapshot.empty) {
+        alert("Ce mot en swahili existe déjà.");
+        return;
+      }
+  
+      await addDoc(motsRef, {
+        swahili,
+        francais,
+        etape: etape || "",
+        type: type || "",
+        dateEnregistrement: Timestamp.now()
+      });
+  
+      chargerMots();
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du mot:", error);
+      alert("Erreur lors de l'enregistrement.");
+    }
+  
     document.getElementById("swahiliInput").value = "";
     document.getElementById("francaisInput").value = "";
     document.getElementById("etapeInput").value = "";
     document.getElementById("typeInput").value = "";
-
-  } catch (error) {
-    console.error("Erreur lors de l'ajout du mot:", error);
   }
-}
 
-async function ajouterMot() {
+async function ajouterMot2() {
     let swahili = document.getElementById("swahiliInput").value;
     let francais = document.getElementById("francaisInput").value;
     let etape = document.getElementById("etapeInput").value;
