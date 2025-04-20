@@ -37,8 +37,13 @@ async function chargerMots() {
         console.error("Erreur lors du chargement des mots:", error);
     }
 }
-async function ajouterMot() {
-    let swahili = document.getElementById("swahiliInput").value.trim().toLowerCase();
+// 🔤 Fonction de normalisation : minuscule + suppression d'accents
+function normaliserTexte(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+  
+  async function ajouterMot() {
+    let swahili = document.getElementById("swahiliInput").value.trim();
     let francais = document.getElementById("francaisInput").value.trim();
     let etape = document.getElementById("etapeInput").value;
     let type = document.getElementById("typeInput").value;
@@ -48,18 +53,21 @@ async function ajouterMot() {
       return;
     }
   
+    const swahiliNormalise = normaliserTexte(swahili);
+  
     try {
       const motsRef = collection(db, "mots_swahili");
-      const q = query(motsRef, where("swahili", "==", swahili));
+      const q = query(motsRef, where("swahiliNormalise", "==", swahiliNormalise));
       const snapshot = await getDocs(q);
   
       if (!snapshot.empty) {
-        alert("Ce mot en swahili existe déjà.");
+        alert("Ce mot existe déjà (même s'il est écrit avec une majuscule ou accent).");
         return;
       }
   
       await addDoc(motsRef, {
         swahili,
+        swahiliNormalise,
         francais,
         etape: etape || "",
         type: type || "",
